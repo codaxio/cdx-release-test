@@ -1,0 +1,6 @@
+{
+	"devDependencies": {
+		"@codaxio/cdx": "^0.26.0",
+		"@types/node": "^22.10.1"
+	}
+}
