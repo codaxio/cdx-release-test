@@ -1,6 +1,6 @@
 {
   "name": "pkg1",
-  "version": "0.1.0",
+  "version": "v0.13.6",
   "description": "",
   "main": "index.ts",
   "scripts": {
