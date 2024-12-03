@@ -278,6 +278,7 @@ export class Manifest {
       const exists = await execute(
         `gh pr list --state open -B ${commandConfig.targetBranch} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
       ).then((x) => x.stdout);
+      console.log({exists});
       const pr = JSON.parse(exists);
       if (pr.length) {
         log(`Updating PR: ${pr[0].number}`);
