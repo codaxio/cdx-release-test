@@ -14,7 +14,10 @@ on:
         description: 'Source Ref (feature branch only, not main)'
         required: true
       target:
-        description: 'Release branch (pre-* for prerelease or fix-* for hotfix)'
+        description: 'Release branch'
+        deprecationMessage: |
+          - pre-* for prerelease
+          - or fix-* for hotfix if source is a release branch
         required: true
         default: 'autorelease'
 
