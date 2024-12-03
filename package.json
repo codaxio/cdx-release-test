@@ -3,5 +3,5 @@
 		"@codaxio/cdx": "^0.26.0",
 		"@types/node": "^22.10.1"
 	},
-	"version": "0.13.0-alpha.1"
+	"version": "0.13.0-alpha.2"
 }
