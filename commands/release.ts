@@ -97,6 +97,7 @@ export default class ReleaseCommand extends BaseCommand {
     }
 
     // Create the target branch if not exits on remote
+    log(`Fetching ${options.target} and ${options.source}...`);
     await execute(`git fetch origin ${options.target} 2> /dev/null || git checkout -b ${options.target} origin/${commandConfig.baseTarget}`);
     await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
 
