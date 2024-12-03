@@ -216,6 +216,7 @@ export class Manifest2 {
     await execute(`git checkout ${this.options.target}`);
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
+    await execute(`git branch -a`);
   }
 
   get source() {
