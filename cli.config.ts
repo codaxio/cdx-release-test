@@ -44,7 +44,7 @@ export default {
           const imageTag = `${json.name.replaceAll('@', '').replaceAll('/', '-')}-${version}`;
           log(`${c.yellow(imageTag)}: Prepare publishing...`);
           const exists = await execute(
-            `aws ecr describe-images --repository-name="usdn-backend" --image-ids=imageTag="${imageTag} 2> /dev/null`,
+            `aws ecr describe-images --repository-name="usdn-backend" --image-ids=imageTag="${imageTag}" 2> /dev/null`,
           ).then((x) => x.stdout.split('\n').filter((x) => x));
           if (exists.length) {
             log(`${c.yellow(imageTag)}: Package already exists in ECR [usdn-backend], skipping...`);
