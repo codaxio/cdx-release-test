@@ -97,6 +97,9 @@ export default class ReleaseCommand extends BaseCommand {
       await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
       process.exit(0);
     }
+
+    await execute(`git fetch origin ${options.target}`)
+    await execute(`git fetch origin ${options.source}`)
     if (options.pr) {
       await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
       await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');

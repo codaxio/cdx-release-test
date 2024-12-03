@@ -33,9 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
 
       - uses: codaxio/cdx@main
         with:
@@ -44,7 +41,7 @@ jobs:
           command: |
             release \
               --source ${{ github.event.pull_request.head.ref }} \
-              --target ${{ format('remotes/origin/release/{0}', github.event.pull_request.base.ref) }} \
+              --target ${{ github.event.pull_request.base.ref }} \
               --pr ${{ github.event.pull_request.number }} \
               ${{ github.event.pull_request.merged == true && '--publish' || '' }}
 
@@ -67,5 +64,5 @@ jobs:
           command: |
             release \
               --source ${{ inputs.source }} \
-              --target ${{ format('remotes/origin/release/{0}', inputs.target) }} \
+              --target ${{ format('release/{0}', inputs.target) }} \
               --pr
