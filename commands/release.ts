@@ -356,6 +356,7 @@ export class Manifest {
                   path: dep.path,
                   current: dep.current,
                   next: dep.next,
+                  nextRange: dep.nextRange,
                   name: dep.name,
                 };
               }),
