@@ -23,6 +23,7 @@ permissions:
   pull-requests: write
   checks: read
   statuses: read
+  repository-projects: read
 
 name: release
 
