@@ -31,9 +31,7 @@ export default class ReleaseCommand extends BaseCommand {
   defaultConfig = {
     repository: '<owner>/<repo>',
     manifestPath: '.release-manifest.json',
-    targetBranch: 'release/autorelease',
-    sourceBranch: 'feature/autorelease',
-    defaultBranch: 'main',
+    baseTarget: 'main',
     rootPackage: false,
     scan: [],
     pullRequest: {
@@ -98,8 +96,10 @@ export default class ReleaseCommand extends BaseCommand {
       process.exit(0);
     }
 
-    await execute(`git fetch origin ${options.target}`)
-    await execute(`git fetch origin ${options.source}`)
+    // Create the target branch if not exits on remote
+    await execute(`git fetch origin ${options.target} 2> /dev/null || git checkout -b ${options.target} origin/${commandConfig.baseTarget}`);
+    await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
+
     if (options.pr) {
       await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
       await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');
@@ -114,8 +114,8 @@ export default class ReleaseCommand extends BaseCommand {
       path: commandConfig.manifestPath,
     });
     await manifest.generate({
-      source: options.source || commandConfig.sourceBranch,
-      target: options.target || commandConfig.targetBranch,
+      source: options.source,
+      target: options.target,
       hasRootPackage: commandConfig.rootPackage,
       scan: commandConfig.scan.map((path: string) => {
         if (path.endsWith('/')) return path;
@@ -138,21 +138,10 @@ export default class ReleaseCommand extends BaseCommand {
     }
 
     if (options.pr) {
-      if (options.pr && options.pr !== true) {
-        if (options.source == commandConfig.defaultBranch) {
-          // PR was created from default branch
-          log(
-            c.red(`Cannot use default branch "${c.green(options.source)}",
-Please reopen a PR from a feature branch based on "${c.green(options.source)}"`),
-          );
-          process.exit(1);
-        }
-      }
-      if (options.pr === true && commandConfig.defaultBranch == options.source) {
-        await execute(`git checkout -B ${commandConfig.sourceBranch} ${options.source}`);
-      }
-
-      manifest.save().applyBumps().updateChangelogs().createOrUpdatePR({
+      manifest.save()
+      .applyBumps()
+      .updateChangelogs()
+      .createOrUpdatePR({
         options,
         commandConfig,
       });
