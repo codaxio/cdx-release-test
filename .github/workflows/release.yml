@@ -1,0 +1,50 @@
+on:
+  pull_request:
+    types: 
+      - opened
+      - closed
+      - synchronize
+    branches:
+      - release/*
+
+ 
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source Ref (feature branch only, not main)'
+        required: true
+      target:
+        description: 'Release branch (pre-* for prerelease or fix-* for hotfix)'
+        required: true
+        default: 'autorelease'
+
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: release
+
+jobs:
+  if: github.event_name == 'pull_request' && github.event.action != 'closed'
+  release:
+    name: Auto Release
+    env:
+      GH_TOKEN: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.source || github.event.pull_request.head.ref }}
+
+      - uses: codaxio/cdx@main
+        with:
+          config: cli.config.ts
+          load: commands/
+          command: |
+            release \
+              --source ${{ inputs.source || github.event.pull_request.head.ref }} \
+              --target ${{ inputs.target && format('remotes/origin/release/{0}', inputs.target) || format('remotes/origin/release/{0}', github.event.pull_request.base.ref)) }} \
+              --pr ${{ github.event.pull_request.number }} \
+              ${{ github.event.pull_request.merged == true && '--publish' || '' }}
