@@ -213,10 +213,8 @@ export class Manifest2 {
       await execute(`git checkout -b ${this.options.target} origin/${this.options.base || this.config.baseTarget}`);
       await execute(`git push origin ${this.options.target}`);
     }
-    log(`Branch ${this.target} exists`);
     await execute(`git checkout ${this.options.target}`);
     await execute(`git checkout ${this.options.source}`);
-    console.log(await execute('git branch -a'))
   }
 
   get source() {
