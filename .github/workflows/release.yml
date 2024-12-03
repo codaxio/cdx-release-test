@@ -26,8 +26,8 @@ permissions:
 name: release
 
 jobs:
-  if: github.event_name == 'pull_request' && github.event.action != 'closed'
   release:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     name: Auto Release
     env:
       GH_TOKEN: ${{ github.token }}
