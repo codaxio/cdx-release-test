@@ -3,7 +3,7 @@
 
 ### Bug Fixes
 
-* fix: fix ([e15978e](https://github.com/codaxio/cdx-release-test/commit/e15978ed7e1de77ee984197db37e6bbd13574f7a))
+* fix: fix ([7a608b8](https://github.com/codaxio/cdx-release-test/commit/7a608b81b4d0d6eae4818dc7b9e0ba4a05308e43))
 
 
 
