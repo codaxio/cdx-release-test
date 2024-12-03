@@ -14,13 +14,9 @@ on:
         description: 'Source Ref (feature branch only, not main)'
         required: true
       target:
-        description: |
-          Release branch
-          - pre-* for prerelease
-          - or fix-* for hotfix if source is a release branch
+        description: 'Release branch (any, pre-* or fix-* for prerelease/hotfix)'
         required: true
         default: 'autorelease'
-
 
 permissions:
   contents: write
@@ -48,6 +44,6 @@ jobs:
           command: |
             release \
               --source ${{ inputs.source || github.event.pull_request.head.ref }} \
-              --target ${{ inputs.target && format('remotes/origin/release/{0}', inputs.target) || format('remotes/origin/release/{0}', github.event.pull_request.base.ref)) }} \
+              --target ${{ inputs.target && format('remotes/origin/release/{0}', inputs.target) || format('remotes/origin/release/{0}', github.event.pull_request.base.ref) }} \
               --pr ${{ github.event.pull_request.number }} \
               ${{ github.event.pull_request.merged == true && '--publish' || '' }}
