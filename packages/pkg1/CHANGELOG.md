@@ -1,5 +1,5 @@
 
-## [v0.13.6](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-vv0.13.6) (2024-12-03)
+## [0.13.7](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-v0.13.7) (2024-12-03)
 
 ### Bug Fixes
 
@@ -8,6 +8,7 @@
 
 ### Other Changes
 
+* 2024-12-03 chore: bump versions & update changelogs ([455b966](https://github.com/codaxio/cdx-release-test/commit/455b966cab60758bb24d9fa6fd069559a8e9efba))
 * 2024-12-03 chore: bump versions & update changelogs ([5f27f82](https://github.com/codaxio/cdx-release-test/commit/5f27f827ebaf2c5665815852f7165f9da5e027ba))
 * 2024-12-03 chore: bump versions & update changelogs ([f3f58da](https://github.com/codaxio/cdx-release-test/commit/f3f58da95075913a528ef796645db9ca51c4521f))
 * 2024-12-03 chore: bump versions & update changelogs ([188c78c](https://github.com/codaxio/cdx-release-test/commit/188c78cad1e235010a1f7b58333643c45f12a2cd))
