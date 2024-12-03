@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@codaxio/cdx':
-        specifier: ^0.26.0
-        version: 0.26.0
+        specifier: ^0.27.0
+        version: 0.27.0
       '@types/node':
         specifier: ^22.10.1
         version: 22.10.1
@@ -27,8 +27,8 @@ importers:
 
 packages:
 
-  '@codaxio/cdx@0.26.0':
-    resolution: {integrity: sha512-xP5+0ZGcSnPOyasp+CpGh/l+Q8CUiAJvymYZIAURqmwgnOuiw4H3IcTVyuu0/Q/gZcVsMpGI90fXmv9x0ITXBQ==}
+  '@codaxio/cdx@0.27.0':
+    resolution: {integrity: sha512-L6O36D2rpXL3+dpsvhrKCu6Cn1j82+jXUsrz+SHQrjsaycjvTDO3YcZP/CjmZuD3BYBhjq2faQCyDPVfh7bXlw==}
     hasBin: true
 
   '@types/node@20.17.9':
@@ -45,7 +45,7 @@ packages:
 
 snapshots:
 
-  '@codaxio/cdx@0.26.0':
+  '@codaxio/cdx@0.27.0':
     dependencies:
       '@types/node': 20.17.9
 

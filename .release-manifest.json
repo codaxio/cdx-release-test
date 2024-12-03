@@ -1,0 +1,28 @@
+{
+  "releases": [
+    {
+      "path": "packages/pkg1",
+      "current": "0.1.0",
+      "next": "0.1.1",
+      "name": "pkg1",
+      "changelog": "\n## [0.1.1](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-v0.1.1) (2024-12-03)\n\n### Bug Fixes\n\n* fix: fix ([7a608b8](https://github.com/codaxio/cdx-release-test/commit/7a608b81b4d0d6eae4818dc7b9e0ba4a05308e43))\n\n",
+      "dependencies": []
+    },
+    {
+      "path": "packages/svc1",
+      "current": "0.1.0",
+      "next": "0.1.1",
+      "name": "svc1",
+      "changelog": "\n## [0.1.1](https://github.com/codaxio/cdx-release-test/compare/svc1-v0.1.0...svc1-v0.1.1) (2024-12-03)\n\n### Bug Fixes\n\n* fix: fix ([7a608b8](https://github.com/codaxio/cdx-release-test/commit/7a608b81b4d0d6eae4818dc7b9e0ba4a05308e43))\n\n### Dependencies\n\n* The following workspace dependencies were updated\n    * pkg1 bumped from 0.1.0 to 0.1.1\n",
+      "dependencies": [
+        {
+          "previous": "workspace:*",
+          "path": "packages/pkg1",
+          "current": "0.1.0",
+          "next": "0.1.1",
+          "name": "pkg1"
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export function log(...msg: unknown[]) {
-  console.log(c.green('RELEASEME'), '>', ...msg);
+  console.log(c.green('RELEASE'), '>', ...msg);
 }
 
 function formatVersion(version: string, bump: 'major' | 'minor' | 'patch') {
@@ -31,9 +31,7 @@ export default class ReleaseCommand extends BaseCommand {
   defaultConfig = {
     repository: '<owner>/<repo>',
     manifestPath: '.release-manifest.json',
-    targetBranch: 'release/autorelease',
-    sourceBranch: 'feature/autorelease',
-    defaultBranch: 'main',
+    baseTarget: 'main',
     rootPackage: false,
     scan: [],
     pullRequest: {
@@ -77,10 +75,14 @@ export default class ReleaseCommand extends BaseCommand {
       },
       onChangelog: async (manifest: Manifest) => {},
       onScanFinished: async (manifest: Manifest) => {},
-      onPublish: async (manifest: {
-        releases: Release[];
-      }, commandConfig: any, pdId: string) => {},
-    }
+      onPublish: async (
+        manifest: {
+          releases: Release[];
+        },
+        commandConfig: any,
+        pdId: string,
+      ) => {},
+    },
   };
 
   async run(options: Record<string, any>, command: any) {
@@ -97,11 +99,19 @@ export default class ReleaseCommand extends BaseCommand {
       await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
       process.exit(0);
     }
+
+    // Create the target branch if not exits on remote
+    log(`Fetching ${options.target} and ${options.source}...`);
+    await execute(
+      `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
+    );
+    await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
+    await execute(`git checkout ${options.source}`);
     if (options.pr) {
       await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
       await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');
       await execute('gh label create "autorelease: published" -f --description "Published" --color C0DFEF');
-      if (options.pr && options.pr !== true) {
+      if (options.pr !== true) {
         await execute(
           `gh pr edit ${options.pr} --add-label="autorelease: pending" --remove-label="autorelease: ready"`,
         );
@@ -111,8 +121,8 @@ export default class ReleaseCommand extends BaseCommand {
       path: commandConfig.manifestPath,
     });
     await manifest.generate({
-      source: options.source || commandConfig.sourceBranch,
-      target: options.target || commandConfig.targetBranch,
+      source: options.source,
+      target: options.target,
       hasRootPackage: commandConfig.rootPackage,
       scan: commandConfig.scan.map((path: string) => {
         if (path.endsWith('/')) return path;
@@ -124,7 +134,7 @@ export default class ReleaseCommand extends BaseCommand {
 
     log(`Preparing ${manifest.releases.size} release${manifest.releases.size ? 's' : ''}...`);
     if (!manifest.releases.size) {
-      this.log('No changes detected, skipping release...');
+      log('No changes detected, skipping release...');
       return;
     }
     const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
@@ -135,20 +145,6 @@ export default class ReleaseCommand extends BaseCommand {
     }
 
     if (options.pr) {
-      if (options.pr && options.pr !== true) {
-        if (options.source == commandConfig.defaultBranch) {
-          // PR was created from default branch
-          log(
-            c.red(`Cannot use default branch "${c.green(options.source)}",
-Please reopen a PR from a feature branch based on "${c.green(options.source)}"`),
-          );
-          process.exit(1);
-        }
-      }
-      if (options.pr === true && commandConfig.defaultBranch == options.source) {
-        await execute(`git checkout -B ${commandConfig.sourceBranch} ${options.source}`);
-      }
-
       manifest.save().applyBumps().updateChangelogs().createOrUpdatePR({
         options,
         commandConfig,
@@ -216,11 +212,10 @@ export class Manifest {
       process.exit(0);
     }
     log(`${c.blue(this.commits.length)} commits found`);
-    const files = this.commits.flatMap((commit) => commit.files)
-    .filter((file, i, a) => a.indexOf(file) === i);
+    const files = this.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
     log(`${c.blue(files.length)} files changed`);
 
-    for (const commit of this.commits) { 
+    for (const commit of this.commits) {
       await commit.checkImpact(
         scan.map((p) => path.resolve(p)),
         hasRootPackage,
@@ -228,14 +223,14 @@ export class Manifest {
       );
     }
 
-    let isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
+    const isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
+    const isHotfix = this.target.includes('/fix-') ? this.target.split('/fix-')[1] : false;
 
     for (const release of this.releases.values()) {
-      release.next = await release.computeNewVersion(isPrerelease);
+      release.next = await release.computeNewVersion(isPrerelease || isHotfix);
     }
 
-    const maxLength = Math.max(...Array.from(this.releases.values())
-    .map((release) => release.json.name.length));
+    const maxLength = Math.max(...Array.from(this.releases.values()).map((release) => release.json.name.length));
 
     Array.from(this.releases.values())
       .filter((release) => {
@@ -282,10 +277,11 @@ export class Manifest {
       log(`PR updated: ${prUrl}`);
     } else if (options.pr) {
       const exists = await execute(
-        `gh pr list --state open -B ${commandConfig.targetBranch} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
+        `gh pr list --state open -B ${this.target} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
       ).then((x) => x.stdout);
-      const pr = JSON.parse(exists);
-      if (pr.length) {
+      console.log(exists);
+      if (exists && exists.length) {
+        const pr = JSON.parse(exists);
         log(`Updating PR: ${pr[0].number}`);
         const prUrl = await execute(
           `gh pr edit ${pr[0].number} --add-label "autorelease: ready"  --remove-label "autorelease: pending" --body "${this.changelog}"`,
@@ -293,7 +289,7 @@ export class Manifest {
         log(`PR updated: ${prUrl}`);
       } else {
         const pullRequest = await execute(
-          `gh pr create -B "${commandConfig.targetBranch}" --title "chore: release ${Array.from(this.releases.values())
+          `gh pr create -B "${this.target}" --title "chore: release ${Array.from(this.releases.values())
             .map((release) => release.json.name + '@' + release.next)
             .join(', ')}" --body "${this.changelog}" --label "autorelease: ready"`,
         ).then((x) => x.stdout);
@@ -431,7 +427,7 @@ export class Release {
   constructor({ path, name }: { path: string; name: string }) {
     this.path = path;
     this.name = name;
-    this.json = readJson(path + '/package.json');
+    this.json = readJson(this.path + '/package.json');
     this.current = this.json.version || '0.0.0';
   }
 
@@ -491,13 +487,19 @@ export class Release {
   }
 
   async computeNewVersion(isPrerelease: string | false) {
-    const {stdout} = await execute(
-      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : this.bump} --no-git-tag-version --allow-same-version`)
-    writeJson(path + '/package.json', {
+    const { stdout } = await execute(
+      `pnpm version ${isPrerelease ? `prerelease` : this.bump} ${
+        isPrerelease ? `--preid=${isPrerelease}` : ''
+      } --no-git-tag-version --allow-same-version`,
+      {
+        cwd: this.path,
+      },
+    );
+    writeJson(this.path + '/package.json', {
       ...this.json,
-      version: this.current
+      version: this.current,
     });
-    return stdout.trim()
+    return stdout.trim().replace(/^v/, '');
   }
 
   async generateChangelog({
@@ -532,10 +534,9 @@ export class Release {
       if (section.commits?.length) {
         this.changelog += `${commandConfig.pullRequest[section.section as keyof typeof commandConfig.pullRequest]}\n\n`;
         for (const commit of section.commits) {
-          this.changelog += `* ${commit.date.toISOString().split('T')[0]} ${commit.message} ([${commit.hash.slice(
-            0,
-            7,
-          )}](https://github.com/${commandConfig.repository}/commit/${commit.hash}))\n`;
+          this.changelog += `* ${commit.message} ([${commit.hash.slice(0, 7)}](https://github.com/${
+            commandConfig.repository
+          }/commit/${commit.hash}))\n`;
         }
         this.changelog += '\n';
       }

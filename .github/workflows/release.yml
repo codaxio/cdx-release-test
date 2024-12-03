@@ -21,15 +21,18 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  checks: read
+  statuses: read
+  repository-projects: read
 
 name: release
 
 jobs:
   auto-release:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.event_name == 'pull_request' && (github.event.pull_request.merged || github.event.action != 'closed')
     name: Auto Release
     env:
-      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,13 +52,10 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     name: Manual Release
     env:
-      GH_TOKEN: ${{ github.token }}
+      GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ inputs.source }}
 
       - uses: codaxio/cdx@main
         with:
