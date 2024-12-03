@@ -98,8 +98,8 @@ export default class ReleaseCommand extends BaseCommand {
 
     // Create the target branch if not exits on remote
     log(`Fetching ${options.target} and ${options.source}...`);
-    await execute(`git fetch origin ${options.target} 2> /dev/null || git checkout -b ${options.target} origin/${commandConfig.baseTarget}`);
-    await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
+    console.log(await execute(`git fetch origin ${options.target} 2> /dev/null || git checkout -b ${options.target} origin/${commandConfig.baseTarget}`));
+    console.log(await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`));
     console.log(await execute(`git branch -a`))
 
     if (options.pr) {
@@ -192,7 +192,7 @@ export class Manifest {
     }
 
     const logs = await execute(
-      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${source}...${target.replace('remotes/', '')}`,
+      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${source}...${target.replace('origin/', 'remotes/origin/')}`,
     ).then((x) => x.stdout);
     this.commits = await Promise.all(
       logs
