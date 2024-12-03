@@ -3,9 +3,9 @@
     {
       "path": "packages/pkg1",
       "current": "0.1.0",
-      "next": "v0.13.1",
+      "next": "v0.13.2",
       "name": "pkg1",
-      "changelog": "\n## [v0.13.1](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-vv0.13.1) (2024-12-03)\n\n### Bug Fixes\n\n* 2024-12-03 fix: add script ([103423d](https://github.com/codaxio/cdx-release-test/commit/103423d5760be1aa0738219872695e979517f369))\n\n",
+      "changelog": "\n## [v0.13.2](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-vv0.13.2) (2024-12-03)\n\n### Bug Fixes\n\n* 2024-12-03 fix: add script ([103423d](https://github.com/codaxio/cdx-release-test/commit/103423d5760be1aa0738219872695e979517f369))\n\n### Other Changes\n\n* 2024-12-03 chore: bump versions & update changelogs ([5e9cb0c](https://github.com/codaxio/cdx-release-test/commit/5e9cb0c49874c2b03dee7d78c3e7b7d556b82bca))\n\n",
       "dependencies": []
     }
   ]
