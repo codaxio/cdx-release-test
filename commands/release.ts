@@ -425,7 +425,7 @@ export class Release {
   constructor({ path, name }: { path: string; name: string }) {
     this.path = path;
     this.name = name;
-    this.json = readJson(path + '/package.json');
+    this.json = readJson(this.path + '/package.json');
     this.current = this.json.version || '0.0.0';
   }
 
@@ -486,7 +486,9 @@ export class Release {
 
   async computeNewVersion(isPrerelease: string | false) {
     const {stdout} = await execute(
-      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : ''} --no-git-tag-version --allow-same-version`)
+      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : ''} --no-git-tag-version --allow-same-version`, {
+        cwd: this.path,
+      })
     writeJson(this.path + '/package.json', {
       ...this.json,
       version: this.current
