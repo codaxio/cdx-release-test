@@ -198,7 +198,7 @@ export class Manifest {
     }
 
     const logs = await execute(
-      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${source}...${target}`,
+      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${source}...${target.replace('remotes/', '')}`,
     ).then((x) => x.stdout);
     this.commits = await Promise.all(
       logs
