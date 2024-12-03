@@ -1,4 +1,4 @@
-import { BaseCommand, c, execute, readJson, writeJson } from '@codaxio/cdx';
+import { BaseCommand, c, execute, readJson, writeJson, type CommandInput } from '@codaxio/cdx';
 import fs from 'fs';
 import path from 'path';
 
@@ -17,17 +17,47 @@ function formatVersion(version: string, bump: 'major' | 'minor' | 'patch') {
   }
 }
 
+export type ReleaseCommandOptions = {
+  repository: string;
+  manifestPath: string;
+  baseTarget: string;
+  rootPackage: boolean;
+  scan: string[];
+  pullRequest: {
+    labels: string[];
+    title: string;
+    header: string;
+    fix: string;
+    feat: string;
+    docs: string;
+    test: string;
+    chore: string;
+    dependencies: string;
+    other: string;
+  };
+  sections: string[];
+  hooks: {
+    generateHeader: (args: { release: Release; year: string; month: string; day: string }) => string;
+    generateTag: (release: Release, version: string) => string;
+    onChangelog: () => void;
+    onScanFinished: () => void;
+    onPublish: () => void;
+  };
+}
+
 export default class ReleaseCommand extends BaseCommand {
   name = 'release';
   description = 'Create a new release';
   options: [string, string, (string | boolean)?][] = [
-    ['-t, --target [target]', 'The target branch'],
-    ['-s, --source [source]', 'The source branch'],
+    ['-t, --target <target>', 'The target branch'],
+    ['-s, --source <source>', 'The source branch'],
+    ['-b, --base [base]', 'The base branch', false],
     ['-n, --dry-run', 'Only print release', false],
     ['--pr [pr_id]', 'The PR id'],
     ['--publish', 'Publish all packages'],
   ];
 
+  configKey = 'release';
   defaultConfig = {
     repository: '<owner>/<repo>',
     manifestPath: '.release-manifest.json',
@@ -48,114 +78,154 @@ export default class ReleaseCommand extends BaseCommand {
     },
     sections: ['feat', 'fix', 'docs', 'test'],
     hooks: {
-      generate: {
-        header: async ({
-          release,
-          year,
-          month,
-          day,
-          commandConfig,
-        }: {
-          release: Release;
-          year: string;
-          month: string;
-          day: string;
-          commandConfig: any;
-        }) => {
-          return `## [${release.next}](https://github.com/${
-            commandConfig.repository
-          }/compare/${await commandConfig.hooks.generate.tag(
-            release,
-            release.current,
-          )}...${await commandConfig.hooks.generate.tag(release, release.next)}) (${year}-${month}-${day})\n\n`;
-        },
-        tag: async (release: Release, version: string) => {
-          return `${release.json.name}-v${version}`;
-        },
+      generateHeader: async ({
+        release,
+        year,
+        month,
+        day,
+      }: {
+        release: Release;
+        year: string;
+        month: string;
+        day: string;
+      }) => {
+        let currentTag = await this.hooks.generateTag(release, release.current);
+        let nextTag = await this.hooks.generateTag(release, release.next);
+        return `## [${release.next}](https://github.com/${this.repository}/compare/${currentTag}...${nextTag} (${year}-${month}-${day})\n\n`;
       },
-      onChangelog: async (manifest: Manifest) => {},
-      onScanFinished: async (manifest: Manifest) => {},
-      onPublish: async (
-        manifest: {
-          releases: Release[];
-        },
-        commandConfig: any,
-        pdId: string,
-      ) => {},
+      generateTag: async (release: Release, version: string) => `${release.json.name}-v${version}`,
+      onChangelog: async () => {},
+      onScanFinished: async () => {},
+      onPublish: async () => {},
     },
   };
 
-  async run(options: Record<string, any>, command: any) {
+  async run(inputs: CommandInput) {
     log('Running release command');
-    log(JSON.stringify(options, null, 2));
-    const commandConfig = this.mergeConfig(this.defaultConfig, 'release');
-    if (options.publish) {
-      if (!fs.existsSync(commandConfig.manifestPath)) {
-        log('No manifest found, skipping release...');
-        process.exit(0);
-      }
-      await execute(
-        `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
-      );
-      console.log(await execute(`git checkout ${options.target}`))
-      log('Publishing packages...');
-      const manifest = JSON.parse(fs.readFileSync(commandConfig.manifestPath).toString());
-      await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
-      process.exit(0);
-    }
+    log(JSON.stringify(inputs.options, null, 2));
+    const manifest = await Manifest2.init(inputs)
+    //const commandConfig = this.mergeConfig(this.defaultConfig, 'release');
+    //if (options.publish) {
+    //  if (!fs.existsSync(commandConfig.manifestPath)) {
+    //    log('No manifest found, skipping release...');
+    //    process.exit(0);
+    //  }
+    //  await execute(
+    //    `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
+    //  );
+    //  console.log(await execute(`git checkout ${options.target}`))
+    //  log('Publishing packages...');
+    //  const manifest = JSON.parse(fs.readFileSync(commandConfig.manifestPath).toString());
+    //  await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
+    //  process.exit(0);
+    //}
 
-    // Create the target branch if not exits on remote
-    log(`Fetching ${options.target} and ${options.source}...`);
-    await execute(
-      `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
-    );
-    await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
-    await execute(`git checkout ${options.source}`);
-    if (options.pr) {
-      await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
-      await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');
-      await execute('gh label create "autorelease: published" -f --description "Published" --color C0DFEF');
-      if (options.pr !== true) {
-        await execute(
-          `gh pr edit ${options.pr} --add-label="autorelease: pending" --remove-label="autorelease: ready"`,
-        );
-      }
-    }
-    const manifest = new Manifest({
-      path: commandConfig.manifestPath,
-    });
-    await manifest.generate({
-      source: options.source,
-      target: options.target,
-      hasRootPackage: commandConfig.rootPackage,
-      scan: commandConfig.scan.map((path: string) => {
-        if (path.endsWith('/')) return path;
-        if (path.endsWith('*')) return path.slice(0, -1).replace(/\/$/, '') + '/';
-        return path + '/';
-      }),
-    });
-    await commandConfig.hooks.onScanFinished(manifest);
+    //// Create the target branch if not exits on remote
+    //log(`Fetching ${options.target} and ${options.source}...`);
+    //await execute(
+    //  `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
+    //);
+    //await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
+    //await execute(`git checkout ${options.source}`);
+    //if (options.pr) {
+    //  await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
+    //  await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');
+    //  await execute('gh label create "autorelease: published" -f --description "Published" --color C0DFEF');
+    //  if (options.pr !== true) {
+    //    await execute(
+    //      `gh pr edit ${options.pr} --add-label="autorelease: pending" --remove-label="autorelease: ready"`,
+    //    );
+    //  }
+    //}
+    //const manifest = new Manifest({
+    //  path: commandConfig.manifestPath,
+    //});
+    //await manifest.generate({
+    //  source: options.source,
+    //  target: options.target,
+    //  hasRootPackage: commandConfig.rootPackage,
+    //  scan: commandConfig.scan.map((path: string) => {
+    //    if (path.endsWith('/')) return path;
+    //    if (path.endsWith('*')) return path.slice(0, -1).replace(/\/$/, '') + '/';
+    //    return path + '/';
+    //  }),
+    //});
+    //await commandConfig.hooks.onScanFinished(manifest);
 
-    log(`Preparing ${manifest.releases.size} release${manifest.releases.size ? 's' : ''}...`);
-    if (!manifest.releases.size) {
-      log('No changes detected, skipping release...');
-      return;
-    }
-    const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
-    await manifest.generateChangelog({ year, month, day, commandConfig });
-    if (options.dryRun) {
-      log('Dry run enabled, skipping release...');
-      return;
-    }
+    //log(`Preparing ${manifest.releases.size} release${manifest.releases.size ? 's' : ''}...`);
+    //if (!manifest.releases.size) {
+    //  log('No changes detected, skipping release...');
+    //  return;
+    //}
+    //const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+    //await manifest.generateChangelog({ year, month, day, commandConfig });
+    //if (options.dryRun) {
+    //  log('Dry run enabled, skipping release...');
+    //  return;
+    //}
 
-    if (options.pr) {
-      manifest.save().applyBumps().updateChangelogs().createOrUpdatePR({
-        options,
-        commandConfig,
-      });
-    }
+    //if (options.pr) {
+    //  manifest.save().applyBumps().updateChangelogs().createOrUpdatePR({
+    //    options,
+    //    commandConfig,
+    //  });
+    //}
   }
 }
+
+
+export class Manifest2 {
+  options: {
+    target: string;
+    source: string;
+    base?: string;
+    dryRun: boolean;
+    pr: string;
+    publish: boolean;
+  }
+  config: any;
+  constructor(inputs: CommandInput) {
+    this.options = inputs.options as typeof this.options
+    this.config = inputs.config
+  }
+
+  static async init(inputs: CommandInput) {
+    const manifest = new Manifest2(inputs);
+    if (manifest.options.publish == true)  await manifest.publish()
+    else await manifest.generate()
+    return manifest
+  }
+
+  async publish() {
+    console.log('publishing', this.config)
+  }
+
+  async generate() {
+    log(`Preparing release from [${this.source}] to [${this.target}]...`);
+    await this._checkBranches()
+  }
+
+  async _checkBranches() {
+    // We need to check if the target branch exists on the remote
+    const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
+    if (targetBranch === 'false') {
+      log(`Branch ${this.target} does not exist, creating it...`);
+      await execute(`git checkout -b ${this.options.target} origin/${this.options.base || this.config.baseTarget}`);
+      await execute(`git push origin ${this.options.target}`);
+    } else {
+      log(`Branch ${this.target} exists`);
+      console.log(await execute('git branch -a'))
+    }
+  }
+
+  get source() {
+    return `${c.green(this.options.source)}`
+  }
+  get target() {
+    return `${c.blue(this.options.target)}`
+  }
+}
+
 
 export class Manifest {
   path: string;

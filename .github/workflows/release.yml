@@ -17,6 +17,10 @@ on:
         description: 'Release branch (any, pre-* or fix-* for prerelease/hotfix)'
         required: true
         default: 'autorelease'
+      base:
+        description: 'Base branch for new release branch (main or another release branch)'
+        required: false
+        default: 'main'
 
 permissions:
   contents: write
@@ -64,5 +68,7 @@ jobs:
           command: |
             release \
               --source ${{ inputs.source }} \
+              --base ${{ inputs.base }} \
               --target ${{ format('release/{0}', inputs.target) }} \
+              ${{ inputs.base && format('--base {0}', inputs.base) || '' }} \
               --pr
