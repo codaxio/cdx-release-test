@@ -94,6 +94,10 @@ export default class ReleaseCommand extends BaseCommand {
         log('No manifest found, skipping release...');
         process.exit(0);
       }
+      await execute(
+        `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
+      );
+      console.log(await execute(`git checkout ${options.target}`))
       log('Publishing packages...');
       const manifest = JSON.parse(fs.readFileSync(commandConfig.manifestPath).toString());
       await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
