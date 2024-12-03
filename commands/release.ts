@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export function log(...msg: unknown[]) {
-  console.log(c.green('RELEASEME'), '>', ...msg);
+  console.log(c.green('RELEASE'), '>', ...msg);
 }
 
 function formatVersion(version: string, bump: 'major' | 'minor' | 'patch') {
@@ -75,10 +75,14 @@ export default class ReleaseCommand extends BaseCommand {
       },
       onChangelog: async (manifest: Manifest) => {},
       onScanFinished: async (manifest: Manifest) => {},
-      onPublish: async (manifest: {
-        releases: Release[];
-      }, commandConfig: any, pdId: string) => {},
-    }
+      onPublish: async (
+        manifest: {
+          releases: Release[];
+        },
+        commandConfig: any,
+        pdId: string,
+      ) => {},
+    },
   };
 
   async run(options: Record<string, any>, command: any) {
@@ -98,7 +102,9 @@ export default class ReleaseCommand extends BaseCommand {
 
     // Create the target branch if not exits on remote
     log(`Fetching ${options.target} and ${options.source}...`);
-    await execute(`git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`);
+    await execute(
+      `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
+    );
     await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
 
     if (options.pr) {
@@ -139,10 +145,7 @@ export default class ReleaseCommand extends BaseCommand {
     }
 
     if (options.pr) {
-      manifest.save()
-      .applyBumps()
-      .updateChangelogs()
-      .createOrUpdatePR({
+      manifest.save().applyBumps().updateChangelogs().createOrUpdatePR({
         options,
         commandConfig,
       });
@@ -209,11 +212,10 @@ export class Manifest {
       process.exit(0);
     }
     log(`${c.blue(this.commits.length)} commits found`);
-    const files = this.commits.flatMap((commit) => commit.files)
-    .filter((file, i, a) => a.indexOf(file) === i);
+    const files = this.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
     log(`${c.blue(files.length)} files changed`);
 
-    for (const commit of this.commits) { 
+    for (const commit of this.commits) {
       await commit.checkImpact(
         scan.map((p) => path.resolve(p)),
         hasRootPackage,
@@ -221,14 +223,14 @@ export class Manifest {
       );
     }
 
-    let isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
+    const isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
+    const isHotfix = this.target.includes('/fix-') ? this.target.split('/fix-')[1] : false;
 
     for (const release of this.releases.values()) {
-      release.next = await release.computeNewVersion(isPrerelease);
+      release.next = await release.computeNewVersion(isPrerelease || isHotfix);
     }
 
-    const maxLength = Math.max(...Array.from(this.releases.values())
-    .map((release) => release.json.name.length));
+    const maxLength = Math.max(...Array.from(this.releases.values()).map((release) => release.json.name.length));
 
     Array.from(this.releases.values())
       .filter((release) => {
@@ -485,13 +487,17 @@ export class Release {
   }
 
   async computeNewVersion(isPrerelease: string | false) {
-    const {stdout} = await execute(
-      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : ''} --no-git-tag-version --allow-same-version`, {
+    const { stdout } = await execute(
+      `pnpm version ${isPrerelease ? `prerelease` : this.bump} ${
+        isPrerelease ? `--preid=${isPrerelease}` : ''
+      } --no-git-tag-version --allow-same-version`,
+      {
         cwd: this.path,
-      })
+      },
+    );
     writeJson(this.path + '/package.json', {
       ...this.json,
-      version: this.current
+      version: this.current,
     });
     return stdout.trim().replace(/^v/, '');
   }
@@ -528,10 +534,9 @@ export class Release {
       if (section.commits?.length) {
         this.changelog += `${commandConfig.pullRequest[section.section as keyof typeof commandConfig.pullRequest]}\n\n`;
         for (const commit of section.commits) {
-          this.changelog += `* ${commit.message} ([${commit.hash.slice(
-            0,
-            7,
-          )}](https://github.com/${commandConfig.repository}/commit/${commit.hash}))\n`;
+          this.changelog += `* ${commit.message} ([${commit.hash.slice(0, 7)}](https://github.com/${
+            commandConfig.repository
+          }/commit/${commit.hash}))\n`;
         }
         this.changelog += '\n';
       }
