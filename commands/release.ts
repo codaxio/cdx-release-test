@@ -219,6 +219,9 @@ export class Manifest2 {
     await execute(`git checkout ${this.options.target}`);
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
+    // Test if we can push to the source branch
+    const canPush = await execute(`git push origin ${this.options.source} --dry-run`).then((x) => x.stdout.trim());
+    
   }
 
   get source() {
