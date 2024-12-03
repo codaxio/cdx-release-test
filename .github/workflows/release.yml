@@ -41,6 +41,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          gh label create "autorelease: pending" -f --description "Preparing release" --color E99695
+          gh label create "autorelease: ready" -f --description "Ready to publish release" --color 2EA44F
+          gh label create "autorelease: published" -f --description "Release published" --color C0DFEF
           gh pr edit ${{ github.event.pull_request.number }} --add-label="autorelease: pending" --remove-label "autorelease: ready"
 
       - uses: codaxio/cdx@main
