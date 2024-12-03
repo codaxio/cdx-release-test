@@ -7,6 +7,7 @@
 
 ### Other Changes
 
+* chore: bump versions & update changelogs ([37f03a0](https://github.com/codaxio/cdx-release-test/commit/37f03a081150088b3021adf6b15828d8483b90f3))
 * chore: bump versions & update changelogs ([c86a912](https://github.com/codaxio/cdx-release-test/commit/c86a9122a12fe6dec2c926d4022e865f0f72b74c))
 * chore: bump versions & update changelogs ([df31241](https://github.com/codaxio/cdx-release-test/commit/df31241c7f8ea346357ea075a783dcfe16103e44))
 * chore: bump versions & update changelogs ([32564b2](https://github.com/codaxio/cdx-release-test/commit/32564b2f7aa00ffb9b4a63b478a5eb1b1bfba3e0))
