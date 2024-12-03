@@ -528,7 +528,7 @@ export class Release {
       if (section.commits?.length) {
         this.changelog += `${commandConfig.pullRequest[section.section as keyof typeof commandConfig.pullRequest]}\n\n`;
         for (const commit of section.commits) {
-          this.changelog += `* ${commit.date.toISOString().split('T')[0]} ${commit.message} ([${commit.hash.slice(
+          this.changelog += `* ${commit.message} ([${commit.hash.slice(
             0,
             7,
           )}](https://github.com/${commandConfig.repository}/commit/${commit.hash}))\n`;
