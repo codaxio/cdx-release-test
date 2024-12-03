@@ -159,6 +159,8 @@ Please reopen a PR from a feature branch based on "${c.green(options.source)}"`)
 
 export class Manifest {
   path: string;
+  source: string = '';
+  target: string = '';
   config: any;
   changelog: string = '';
   commits: Commit[] = [];
@@ -183,6 +185,8 @@ export class Manifest {
     scan: string[];
   }) {
     log(`Scanning commits between ${target} and ${source}...`);
+    this.target = target;
+    this.source = source;
     if (hasRootPackage) {
       this.releases.set(
         '@root',
@@ -212,18 +216,26 @@ export class Manifest {
       process.exit(0);
     }
     log(`${c.blue(this.commits.length)} commits found`);
-    const files = this.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
+    const files = this.commits.flatMap((commit) => commit.files)
+    .filter((file, i, a) => a.indexOf(file) === i);
     log(`${c.blue(files.length)} files changed`);
-    this.commits.forEach((commit: Commit) => {
-      commit.checkImpact(
+
+    for (const commit of this.commits) { 
+      await commit.checkImpact(
         scan.map((p) => path.resolve(p)),
         hasRootPackage,
         this.releases,
       );
-      return commit;
-    });
+    }
 
-    const maxLength = Math.max(...Array.from(this.releases.values()).map((release) => release.json.name.length));
+    let isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
+
+    for (const release of this.releases.values()) {
+      release.next = await release.computeNewVersion(isPrerelease);
+    }
+
+    const maxLength = Math.max(...Array.from(this.releases.values())
+    .map((release) => release.json.name.length));
 
     Array.from(this.releases.values())
       .filter((release) => {
@@ -423,13 +435,11 @@ export class Release {
     this.current = this.json.version || '0.0.0';
   }
 
-  addCommit(commit: Commit) {
+  async addCommit(commit: Commit) {
     this.commits.push(commit);
     if (commit.breaking) this.bump = 'major';
     if (commit.type == 'feat' && this.bump != 'major') this.bump = 'minor';
     if (this.bump == false) this.bump = 'patch';
-
-    this.next = this.computeNewVersion(this.json.version || '0.0.0', this.bump as Bump);
   }
 
   addDependency(release: Release, range: string) {
@@ -480,25 +490,14 @@ export class Release {
     }
   }
 
-  computeNewVersion(version: string, type: Bump) {
-    return version
-      .split('.')
-      .map(Number)
-      .map((v, i, a) => {
-        if (type == 'minor' || type == 'major') a[2] = 0;
-        if (type == 'major') a[1] = 0;
-        if (i == 0 && type == 'major') {
-          v++;
-        }
-        if (i == 1 && type == 'minor') {
-          v++;
-        }
-        if (i == 2 && type == 'patch') {
-          v++;
-        }
-        return v;
-      })
-      .join('.');
+  async computeNewVersion(isPrerelease: string | false) {
+    const {stdout} = await execute(
+      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : this.bump} --no-git-tag-version --allow-same-version`)
+    writeJson(path + '/package.json', {
+      ...this.json,
+      version: this.current
+    });
+    return stdout.trim()
   }
 
   async generateChangelog({
@@ -581,10 +580,10 @@ export class Commit {
     ).then((x) => x.stdout.split('\n').filter((x) => x));
   }
 
-  checkImpact(scan: string[], hasRootPackage: boolean, releases: Map<string, Release>) {
+  async checkImpact(scan: string[], hasRootPackage: boolean, releases: Map<string, Release>) {
     const packagesFiles = this.files.filter((file) => scan.some((p) => file.startsWith(p)));
     if (!packagesFiles.length && hasRootPackage) {
-      releases.get('@root')?.addCommit(this);
+      await releases.get('@root')?.addCommit(this);
     } else {
       const packages = new Map<string, { name: string; path: string }>();
       for (const file of packagesFiles) {
