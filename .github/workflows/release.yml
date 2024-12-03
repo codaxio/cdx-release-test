@@ -39,8 +39,8 @@ jobs:
       GITHUB_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     steps:
-      - run: 'gh pr edit ${{ github.event.pull_request.number }}  --add-label="autorelease: pending" --remove-label "autorelease: ready"'
       - uses: actions/checkout@v4
+      - run: 'gh pr edit ${{ github.event.pull_request.number }}  --add-label="autorelease: pending" --remove-label "autorelease: ready"'
 
       - uses: codaxio/cdx@main
         with:
