@@ -111,7 +111,7 @@ export default class ReleaseCommand extends BaseCommand {
       await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
       await execute('gh label create "autorelease: ready" -f --description "Ready to publish" --color 2EA44F');
       await execute('gh label create "autorelease: published" -f --description "Published" --color C0DFEF');
-      if (options.pr && options.pr !== true) {
+      if (options.pr !== true) {
         await execute(
           `gh pr edit ${options.pr} --add-label="autorelease: pending" --remove-label="autorelease: ready"`,
         );

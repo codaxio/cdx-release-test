@@ -149,6 +149,10 @@ export default {
         await execute(
           `gh pr edit ${prId} --add-label="autorelease: published" --remove-label="autorelease: ready"  --remove-label="autorelease: ready"`,
         );
+        await execute(`pnpm install`);
+        await execute(`git add .`);
+        await execute(`git commit -m "chore: update internal dependencies"`);
+        await execute(`git push`);
       },
     },
   },
