@@ -100,6 +100,7 @@ export default class ReleaseCommand extends BaseCommand {
     log(`Fetching ${options.target} and ${options.source}...`);
     await execute(`git fetch origin ${options.target} 2> /dev/null || git checkout -b ${options.target} origin/${commandConfig.baseTarget}`);
     await execute(`git fetch origin ${options.source} 2> /dev/null || git checkout -b ${options.source}`);
+    console.log(await execute(`git branch -a`))
 
     if (options.pr) {
       await execute('gh label create "autorelease: pending" -f --description "Preparing auto-release" --color E99695');
