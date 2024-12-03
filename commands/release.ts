@@ -129,7 +129,7 @@ export default class ReleaseCommand extends BaseCommand {
 
     log(`Preparing ${manifest.releases.size} release${manifest.releases.size ? 's' : ''}...`);
     if (!manifest.releases.size) {
-      this.log('No changes detected, skipping release...');
+      log('No changes detected, skipping release...');
       return;
     }
     const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
