@@ -40,7 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: 'gh pr edit ${{ github.event.pull_request.number }}  --add-label="autorelease: pending" --remove-label "autorelease: ready"'
+      - run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label="autorelease: pending" --remove-label "autorelease: ready"
 
       - uses: codaxio/cdx@main
         with:
