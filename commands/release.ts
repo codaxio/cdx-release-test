@@ -206,6 +206,7 @@ export class Manifest2 {
   }
 
   async _checkBranches() {
+    console.log(await execute(`git branch -a`))
     // We need to check if the target branch exists on the remote
     const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
     if (targetBranch === 'false') {
@@ -216,7 +217,7 @@ export class Manifest2 {
     await execute(`git checkout ${this.options.target}`);
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
-    await execute(`git branch -a`);
+    console.log(await execute(`git branch -a`))
   }
 
   get source() {
