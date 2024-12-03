@@ -26,7 +26,7 @@ name: release
 
 jobs:
   release:
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' && github.event.action != 'closed'
     name: Auto Release
     env:
       GH_TOKEN: ${{ github.token }}
