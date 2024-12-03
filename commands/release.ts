@@ -65,7 +65,11 @@ export default class ReleaseCommand extends BaseCommand {
     rootPackage: false,
     scan: [],
     pullRequest: {
-      labels: ['autorelease: pending'],
+      labels: {
+        pending: 'autorelease: pending',
+        ready: 'autorelease: ready',
+        published: 'autorelease: published',
+      },
       title: 'chore: release ${version}',
       header: ':robot: Autorelease',
       fix: '### Bug Fixes',
@@ -101,8 +105,7 @@ export default class ReleaseCommand extends BaseCommand {
   };
 
   async run(inputs: CommandInput) {
-    log('Running release command');
-    log(JSON.stringify(inputs.options, null, 2));
+    log('Running release command with options:\n', inputs.options);
     const manifest = await Manifest2.init(inputs)
     //const commandConfig = this.mergeConfig(this.defaultConfig, 'release');
     //if (options.publish) {
@@ -206,7 +209,6 @@ export class Manifest2 {
   }
 
   async _checkBranches() {
-    console.log(await execute(`git branch -a`))
     // We need to check if the target branch exists on the remote
     const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
     if (targetBranch === 'false') {
@@ -217,7 +219,6 @@ export class Manifest2 {
     await execute(`git checkout ${this.options.target}`);
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
-    console.log(await execute(`git branch -a`))
   }
 
   get source() {
