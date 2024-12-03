@@ -214,6 +214,7 @@ export class Manifest2 {
       await execute(`git push origin ${this.options.target}`);
     }
     await execute(`git checkout ${this.options.target}`);
+    await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
   }
 
