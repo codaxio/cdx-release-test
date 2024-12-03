@@ -44,7 +44,7 @@ export default {
           const imageTag = `${json.name.replaceAll('@', '').replaceAll('/', '-')}-${version}`;
           log(`${c.yellow(imageTag)}: Prepare publishing...`);
           const exists = await execute(
-            `aws ecr describe-images --repository-name="usdn-backend" --image-ids=imageTag="${imageTag}" 2> /dev/null`,
+            `echo aws ecr describe-images --repository-name="usdn-backend" --image-ids=imageTag="${imageTag}" 2> /dev/null`,
           ).then((x) => x.stdout.split('\n').filter((x) => x));
           if (exists.length) {
             log(`${c.yellow(imageTag)}: Package already exists in ECR [usdn-backend], skipping...`);
@@ -124,10 +124,11 @@ export default {
             if (json.devDependencies?.[dep.name]) json.devDependencies[dep.name] = dep.nextRange;
             if (json.peerDependencies?.[dep.name]) json.peerDependencies[dep.name] = dep.nextRange;
           });
+          console.log(`Update ${release.name} dependencies`, json);
           writeJson(`${release.path}/package.json`, json);
         });
 
-        await execute(`echo pnpm install`);
+        console.log("Bump dependencies", await execute(`pnpm install`))
         const releasesNames = unreleased.map((x) => x.name);
         if (releasesNames.length) {
           await execute(`echo pnpm --workspace-concurrency Infinity -F ${releasesNames.join(' -F ')} build`, {
@@ -149,7 +150,8 @@ export default {
         await execute(
           `gh pr edit ${prId} --add-label="autorelease: published" --remove-label="autorelease: ready"  --remove-label="autorelease: ready"`,
         );
-        await execute(`pnpm install`);
+        console.log(await execute(`git status`));
+        console.log(await execute(`pnpm install`));
         await execute(`git add .`);
         await execute(`git commit -m "chore: update internal dependencies"`);
         await execute(`git push`);
