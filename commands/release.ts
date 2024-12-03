@@ -276,7 +276,7 @@ export class Manifest {
       log(`PR updated: ${prUrl}`);
     } else if (options.pr) {
       const exists = await execute(
-        `gh pr list --state open -B ${commandConfig.targetBranch} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
+        `gh pr list --state open -B ${this.target} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
       ).then((x) => x.stdout);
       if (exists.length) {
         const pr = JSON.parse(exists);
@@ -287,7 +287,7 @@ export class Manifest {
         log(`PR updated: ${prUrl}`);
       } else {
         const pullRequest = await execute(
-          `gh pr create -B "${commandConfig.targetBranch}" --title "chore: release ${Array.from(this.releases.values())
+          `gh pr create -B "${this.target}" --title "chore: release ${Array.from(this.releases.values())
             .map((release) => release.json.name + '@' + release.next)
             .join(', ')}" --body "${this.changelog}" --label "autorelease: ready"`,
         ).then((x) => x.stdout);
