@@ -15,6 +15,16 @@ importers:
         specifier: ^22.10.1
         version: 22.10.1
 
+  packages/pkg1: {}
+
+  packages/svc1:
+    dependencies:
+      pkg1:
+        specifier: workspace:*
+        version: link:../pkg1
+
+  packages/svc2: {}
+
 packages:
 
   '@codaxio/cdx@0.26.0':
