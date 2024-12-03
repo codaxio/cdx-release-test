@@ -486,7 +486,7 @@ export class Release {
 
   async computeNewVersion(isPrerelease: string | false) {
     const {stdout} = await execute(
-      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : this.bump} --no-git-tag-version --allow-same-version`)
+      `pnpm version ${isPrerelease ? `pre${this.bump}` : this.bump} ${isPrerelease ? `--preid=${isPrerelease}` : ''} --no-git-tag-version --allow-same-version`)
     writeJson(path + '/package.json', {
       ...this.json,
       version: this.current
