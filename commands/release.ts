@@ -132,7 +132,7 @@ export class Manifest {
 
   async generate() {
     await this.reset()
-    log(`Preparing release from [${this.source}] to [${this.target}]...`);
+    log(`Preparing release...`);
     await this._checkBranches()
     if (this.options.pr && this.options.pr !== true) await this.setLabel('autorelease: pending')
     await this._scanCommits()
@@ -166,7 +166,7 @@ export class Manifest {
   }
 
   async _scanCommits() {
-    log(`Scanning commits between ${this.target} and ${this.source}...`);
+    log(`Scanning commits between [${this.target}] and [${this.source}]...`);
 
     const commits = await execute(
       `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
