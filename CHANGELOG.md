@@ -49,8 +49,13 @@
 * feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))
 * feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))
 
+### Bug Fixes
+
+* fix: dump ([aeafdac](https://github.com/codaxio/cdx-release-test/commit/aeafdac52f8c5ddb11e384cded3742909057dfbf))
+
 ### Other Changes
 
+* chore: bump versions & update changelogs ([13d9ee7](https://github.com/codaxio/cdx-release-test/commit/13d9ee7e82cb34b8bad1e11bf8ff5c4807996af1))
 * chore: bump versions & update changelogs ([cf34464](https://github.com/codaxio/cdx-release-test/commit/cf3446463387c60d35e27f343b2e5428c07ddc80))
 * chore: bump versions & update changelogs ([e6a3d95](https://github.com/codaxio/cdx-release-test/commit/e6a3d95f3fac3bada27125e8b52a31fed9e327d1))
 * chore: bump versions & update changelogs ([652a8fb](https://github.com/codaxio/cdx-release-test/commit/652a8fb6c10315842944039f8124c981c08416f7))
