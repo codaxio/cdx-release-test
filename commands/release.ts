@@ -6,6 +6,21 @@ export function log(...msg: unknown[]) {
   console.log(c.green('RELEASE'), '>', ...msg);
 }
 
+
+export type Release = {
+  path: string;
+  name: string;
+  current: string;
+  next: string;
+  dependencies: {
+    name: string;
+    range: string;
+  }[];
+}
+
+type PendingManifest = {
+  releases: Record<string, Release>;
+}
 export default class ReleaseCommand extends BaseCommand {
   name = 'release';
   description = 'Create a new release';
@@ -58,33 +73,19 @@ export default class ReleaseCommand extends BaseCommand {
         let nextTag = await this.hooks.generateTag(release, release.next);
         return `## [${release.next}](https://github.com/${this.repository}/compare/${currentTag}...${nextTag} (${year}-${month}-${day})\n\n`;
       },
-      generateTag: async (release: Release, version: string) => `${release.json.name}-v${version}`,
+      generateTag: async (release: Release, version: string) => `${release.name}-v${version}`,
       onChangelog: async () => {},
       onScanFinished: async () => {},
       onPublish: async () => {},
-    },
+    }
   };
 
   async run(inputs: CommandInput) {
-    log('Running release command with options:\n', inputs.options);
+    log(`Running release command with options:\n${inputs.options}`);
     const manifest = await Manifest.init(inputs)
   }
 }
 
-export type Release = {
-  path: string;
-  name: string;
-  current: string;
-  next: string;
-  dependencies: {
-    name: string;
-    range: string;
-  }[];
-}
-
-type PendingManifest = {
-  releases: Record<string, Release>;
-}
 
 export class Manifest {
   options: {
