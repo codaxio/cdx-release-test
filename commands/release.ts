@@ -188,6 +188,7 @@ export class Manifest {
     log(`${c.blue(this.pending.commits.length)} commits found`);
     this.pending.files = this.pending.commits.flatMap((commit) => commit.files)
     .filter((file, i, a) => a.indexOf(file) === i);
+    console.log(this.pending.files)
     log(`${c.blue(this.pending.files.length)} files changed`);
   }
 
