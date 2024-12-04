@@ -148,7 +148,7 @@ export default class ReleaseCommand extends BaseCommand {
   async run(inputs: CommandInput) {
     log(`Running release command with options:`);
     console.log(inputs.options)
-    const manifest = await Manifest.init(inputs)
+    await Manifest.init(inputs)
   }
 }
 
@@ -287,7 +287,9 @@ export class Manifest {
   }
 
   _saveManifest() {
-    writeJson(this.config.manifestPath, this.pending);
+    writeJson(this.config.manifestPath, {
+      releases: this.pending.releases,
+    });
   }
 
   async _updateChangelogs() {

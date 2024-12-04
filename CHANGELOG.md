@@ -1,8 +1,9 @@
 
-## [0.14.0](https://github.com/codaxio/cdx-release-test/compare/undefined-v0.13.7...undefined-v0.14.0 (2024-12-04)
+## [0.14.0](https://github.com/codaxio/cdx-release-test/compare/monorepo-v0.13.7...monorepo-v0.14.0) (2024-12-04)
 
 ### Features
 
+* feat: workflow ([40079a5](https://github.com/codaxio/cdx-release-test/commit/40079a597cee809ff8e9b9cebd81edc8c5664adb))
 * feat: workflow ([741c5c2](https://github.com/codaxio/cdx-release-test/commit/741c5c2ac44f218cf4fb7b0cde82c464df7d2fbc))
 * feat: workflow ([afcc8fb](https://github.com/codaxio/cdx-release-test/commit/afcc8fbabc3689202eeca5ada22627b912d5d385))
 * feat: workflow ([e95bf8c](https://github.com/codaxio/cdx-release-test/commit/e95bf8c9f86e94b07ca3c4cbdfe0f87e295bfcc1))
@@ -47,12 +48,9 @@
 * feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))
 * feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))
 
-### Bug Fixes
-
-* fix: dump ([aeafdac](https://github.com/codaxio/cdx-release-test/commit/aeafdac52f8c5ddb11e384cded3742909057dfbf))
-
 ### Other Changes
 
+* chore: bump versions & update changelogs ([e6a3d95](https://github.com/codaxio/cdx-release-test/commit/e6a3d95f3fac3bada27125e8b52a31fed9e327d1))
 * chore: bump versions & update changelogs ([652a8fb](https://github.com/codaxio/cdx-release-test/commit/652a8fb6c10315842944039f8124c981c08416f7))
 * chore: bump versions & update changelogs ([df55d4d](https://github.com/codaxio/cdx-release-test/commit/df55d4d443ceec5d5e37098460d9558319830f19))
 
