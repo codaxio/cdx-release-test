@@ -192,19 +192,16 @@ export class Manifest {
   }
 
   async publish() {
-    console.log('publishing', this.pending)
-    console.log('currentBranch', await execute('git rev-parse --abbrev-ref HEAD').then((x) => x.stdout.trim()))
-    const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
-    if (targetBranch === 'false') {
-      log(`Target branch ${this.target} does not exist, aborting release...`);
-    }
-    console.log(await execute(`git checkout ${this.options.target}`))
     log('Publishing packages...');
     await this.config.hooks.onPublish({
       releases: this.pending.releases,
       config: this.config,
       prId: this.options.pr,
     });
+    writeJson(this.config.manifestPath, {});
+    await execute('git add .');
+    await execute('git commit -m "chore: publish packages"');
+    await execute('git push');
     process.exit(0);
   }
 

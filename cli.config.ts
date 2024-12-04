@@ -3,8 +3,6 @@ import fs from 'fs';
 
 import { log, type Release } from './commands/release';
 
-
-
 export default {
   release: {
     repository: 'codaxio/cdx-release-test',
@@ -95,8 +93,56 @@ export default {
         config: any,
         prId: string,
       ) => {
+        // we need to build a graph of dependencies, as we need to build and publish them first, put the build in order
+        // then trigger the build and publish for each package
+        // then update the dependencies in the dependent packages package.json
+        // then install, build, publish
+        // then update the PR with the published packages
+          // releases is an object with the following structure
+          //"pkg1": {
+          //  "path": "packages/pkg1",
+          //  "name": "pkg1",
+          //  "current": "0.1.0",
+          //  "next": "0.2.0",
+          //  "dependencies": {}
+          //},
+          //"svc1": {
+          //  "path": "packages/svc1",
+          //  "name": "svc1",
+          //  "current": "0.1.0",
+          //  "next": "0.2.0",
+          //  "dependencies": {
+          //    "base": [
+          //      {
+          //        "name": "pkg1",
+          //        "range": "workspace:*"
+          //      }
+          //    ],
+          //    "dev": [
+          //      {
+          //        "name": "pkg2",
+          //        "range": "workspace:*"
+          //      }
+          //    ]
+          //  }
+          //},
 
-        console.log('releases', releases);
+        let dependencies = {};
+        let releaseWithNoDependencies = [];
+        for (const release of Object.values(releases)) {
+          if (!release.dependencies) {releaseWithNoDependencies.push(release);}
+          else {
+            for (const [type, deps] of Object.entries(release.dependencies)) {
+              for (const dep of deps) {
+                if (!dependencies[dep.name]) {
+                  dependencies[dep.name] = {name: dep.name, type: type, dependents: []};
+                }
+                dependencies[dep.name].dependents.push(release);
+              }
+            }
+          }
+        }
+        console.log('graph', dependencies);
         //// Build packages
         //const releases = manifest.releases;
         //if (!releases) {
