@@ -160,6 +160,8 @@ export class Manifest {
     if (this.options.pr && this.options.pr !== true) await this.setLabel('autorelease: pending')
     await this._scanCommits()
     await this._checkImpactedPackages()
+    await this._computeNewVersion()
+    await this._printBumps()
   }
 
   async reset() {
@@ -170,16 +172,43 @@ export class Manifest {
         this.resetChangelog(release)
       }
 
-      this.pending.releases = {}
+    }
+    this.pending = {
+      packages: {},
+      releases: {},
+      files: [],
+      commits: []
     }
   }
 
-  async _checkImpactedPackages() {
-    let root = {
-      commits: [],
-    } as {
-      commits: Commit[]
+  async _printBumps() {
+    for (const pkg of Object.values(this.pending.packages)) {
+      if (pkg.bump === false) continue
+      log(
+        `bumping ${c.bold(c.magenta(pkg.name))}`.padEnd(40),
+        `from ${c.bold(c.cyan(pkg.current.padEnd(8, ' ')))}`,
+        `to ${c.bold(c.green(pkg.next.padEnd(8, ' ')))}`,
+        `[${c.green(c[pkg.bump === 'major' ? 'red' : pkg.bump === 'minor' ? 'green' : 'yellow'](pkg.bump))}]`,
+      );
     }
+  }
+  async _computeNewVersion() {
+    const isPrerelease = this.options.target.includes('/pre-') ? this.options.target.split('/pre-')[1] : false;
+    const isHotfix = this.options.target.includes('/fix-') ? this.options.target.split('/fix-')[1] : (
+      this.options.source.includes('fix/') ? this.options.source.split('fix/')[1] : false
+    )
+    let promises = Object.values(this.pending.packages).map(async (pkg) => {
+      if (pkg.bump === false) return
+      let bump: string = pkg.bump
+      if (isPrerelease || isHotfix) bump = `prerelease --predid=${isPrerelease || isHotfix}`
+      const { stdout } = await execute(`pnpm version ${bump} --no-git-tag-version --allow-same-version`, { cwd: pkg.path });
+      pkg.next = stdout.trim().replace(/^v/, '');
+    })
+
+    await Promise.all(promises)
+  }
+
+  async _checkImpactedPackages() {
     this.config.scan = this.config.scan.map((p: string) => path.resolve(p))
     this.pending.commits.forEach((commit) => {
       const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(p)))
@@ -242,7 +271,6 @@ export class Manifest {
     log(`${c.blue(this.pending.commits.length)} commits found`);
     this.pending.files = this.pending.commits.flatMap((commit) => commit.files)
     .filter((file, i, a) => a.indexOf(file) === i);
-    console.log(this.pending.files)
     log(`${c.blue(this.pending.files.length)} files changed`);
   }
 
