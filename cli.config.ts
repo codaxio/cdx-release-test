@@ -95,6 +95,8 @@ export default {
         config: any,
         prId: string,
       ) => {
+
+        console.log('releases', releases);
         //// Build packages
         //const releases = manifest.releases;
         //if (!releases) {
