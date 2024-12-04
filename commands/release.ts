@@ -540,7 +540,6 @@ ${release.changelog}
     }
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
-    console.log(await execute(`git branch -a`))
   }
 
   setPackageVersion(release: Release, version: string) {
