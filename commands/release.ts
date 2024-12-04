@@ -6,16 +6,23 @@ export function log(...msg: unknown[]) {
   console.log(c.green('RELEASE'), '>', ...msg);
 }
 
+export type Bump = 'major' | 'minor' | 'patch' | false;
 
-export type Release = {
+
+export type Package = {
+  commits: Commit[];
+  json: Record<string, any>;
   path: string;
   name: string;
   current: string;
   next: string;
+  bump: Bump;
   dependencies: {
     name: string;
     range: string;
   }[];
+}
+export type Release = Omit<Package, 'commits' | 'json'> & {
 }
 
 export type Commit = {
@@ -29,6 +36,7 @@ export type Commit = {
 }
 
 type PendingManifest = {
+  packages: Record<string, Package>;
   releases: Record<string, Release>;
   commits: Commit[];
   files: string[];
@@ -111,6 +119,7 @@ export class Manifest {
   }
   config: any;
   pending: PendingManifest = {
+    packages: {},
     releases: {},
     files: [],
     commits: []
@@ -166,24 +175,56 @@ export class Manifest {
   }
 
   async _checkImpactedPackages() {
-    let root = []
-    let packages = {} as Record<string, string>
-    this.config.scan = this.config.scan.map((p) => path.resolve(p))
+    let root = {
+      commits: [],
+    } as {
+      commits: Commit[]
+    }
+    this.config.scan = this.config.scan.map((p: string) => path.resolve(p))
     this.pending.commits.forEach((commit) => {
-      // Build the releases from the commit files. So if one commit has changes in multiple packages, we will build the release for each package. If we have a root package, we will build a release for it as well.
-      // Extract the package name from the file path if it's in a scanned path
       const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(p)))
-      if (!files.length && this.config.rootPackage) root.push(commit)
+      if (!files.length && this.config.rootPackage) this.addPackage(".", commit)
       else if (files.length) {
         let dirname = `${path.resolve('.')}/`
         files.forEach((file) => {
           let fromScan = this.config.scan.find((p: string) => file.startsWith(p))
           let packagePath = file.replace(`${fromScan}/`, '')
-          packages[packagePath.split('/')[0]] = `${fromScan.replace(dirname, '')}/${packagePath.split('/')[0]}`
+          let path = `${fromScan.replace(dirname, '')}/${packagePath.split('/')[0]}`
+          this.addPackage(path, commit)
         })
       }
     })
-    console.log(packages)
+  }
+
+  _getPackageByPath(path: string) {
+    return Object.values(this.pending.packages).find((r) => r.path === path)
+  }
+
+  addPackage(path: string, commit: Commit) {
+    if (! this._getPackageByPath(path)) {
+      let json = readJson(`${path}/package.json`)
+      this.pending.packages[json.name] =  {
+        commits: [],
+        path,
+        json,
+        name: json.name,
+        bump: false,
+        current: json.version,
+        next: json.version,
+        dependencies: []
+      }
+    }
+    let pkg = this._getPackageByPath(path)
+    if (!pkg) return log(`Package not found: ${path}??`)
+    pkg.commits.push(commit)
+    pkg.bump = this.getBump(commit.type, pkg.bump)
+  }
+
+  getBump(type: string, current: Bump) {
+    if (type === 'major') return 'major'
+    if (type === 'feat' && current != 'major') return 'minor'
+    if (type === 'fix' && current === false) return 'patch'
+    return current
   }
 
   async _scanCommits() {
