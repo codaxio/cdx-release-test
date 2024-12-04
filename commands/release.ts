@@ -209,7 +209,6 @@ export class Manifest {
     await this._computeNewVersion()
     await this._printBumps()
     await this._checkDependencies()
-    await this.config.hooks.onScanFinished(this.pending);
     await this._updateChangelogs()
     if (this.options.dryRun) return log('Dry run enabled, skipping release...');
     await this._saveManifest()
@@ -395,10 +394,11 @@ ${release.changelog}
       }
     }
 
+    await this.config.hooks.onScanFinished(this.pending);
     let releaseCount = Object.keys(this.pending.releases).length
     if (!releaseCount) {
       log('No packages to release, skipping...');
-      return;
+      process.exit(0);
     }
     log(`Preparing ${releaseCount} release${releaseCount ? 's' : ''}...`);
   }
@@ -491,7 +491,7 @@ ${release.changelog}
     log(`Scanning commits from [${this.source}] to [${this.target}]...`);
 
     const commits = await execute(
-      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.target}...${this.options.source}`,
+      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...origin/${this.options.target}`,
     ).then((x) => x.stdout);
     this.pending.commits = await Promise.all(commits.trim().split('\n').map(this._extractCommitData.bind(this)));
     if (!this.pending.commits.length) {
