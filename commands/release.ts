@@ -15,6 +15,7 @@ export type Package = {
   path: string;
   name: string;
   current: string;
+  changelog: string;
   next: string;
   bump: Bump;
   dependencies: {
@@ -22,7 +23,16 @@ export type Package = {
     range: string;
   }[];
 }
-export type Release = Omit<Package, 'commits' | 'json'> & {
+export type Release = {
+  name: string;
+  path: string;
+  current: string;
+  next: string;
+  dependencies: {
+    base: { name: string; range: string }[];
+    dev: { name: string; range: string }[];
+    peer: { name: string; range: string }[];
+  };
 }
 
 export type Commit = {
@@ -41,6 +51,39 @@ type PendingManifest = {
   commits: Commit[];
   files: string[];
 }
+
+
+export type ReleaseCommandConfig = {
+  repository: string;
+  manifestPath: string;
+  baseTarget: string;
+  rootPackage: boolean;
+  scan: string[];
+  pullRequest: {
+    labels: {
+      pending: string;
+      ready: string;
+      published: string;
+    };
+    title: string;
+    header: string;
+    fix: string;
+    feat: string;
+    docs: string;
+    test: string;
+    chore: string;
+    dependencies: string;
+    other: string;
+  };
+  sections: string[];
+  hooks: {
+    generateHeader: (args: { release: Release; year: string; month: string; day: string, config: ReleaseCommandConfig }) => Promise<string>;
+    generateTag: (release: Release, version: string) => Promise<string>;
+    onScanFinished: (manifest: PendingManifest) => Promise<void>;
+    onChangelog: (changelog: string) => Promise<void>;
+    onPublish: () => Promise<void>;
+  };
+}
 export default class ReleaseCommand extends BaseCommand {
   name = 'release';
   description = 'Create a new release';
@@ -54,7 +97,7 @@ export default class ReleaseCommand extends BaseCommand {
   ];
 
   configKey = 'release';
-  defaultConfig = {
+  defaultConfig: ReleaseCommandConfig = {
     repository: '<owner>/<repo>',
     manifestPath: '.release-manifest.json',
     baseTarget: 'main',
@@ -83,15 +126,17 @@ export default class ReleaseCommand extends BaseCommand {
         year,
         month,
         day,
+        config,
       }: {
         release: Release;
         year: string;
         month: string;
         day: string;
+        config: ReleaseCommandConfig;
       }) => {
-        let currentTag = await this.hooks.generateTag(release, release.current);
-        let nextTag = await this.hooks.generateTag(release, release.next);
-        return `## [${release.next}](https://github.com/${this.repository}/compare/${currentTag}...${nextTag} (${year}-${month}-${day})\n\n`;
+        let currentTag = await config.hooks.generateTag(release, release.current);
+        let nextTag = await config.hooks.generateTag(release, release.next);
+        return `## [${release.next}](https://github.com/${config.repository}/compare/${currentTag}...${nextTag} (${year}-${month}-${day})\n\n`;
       },
       generateTag: async (release: Release, version: string) => `${release.name}-v${version}`,
       onChangelog: async () => {},
@@ -117,7 +162,8 @@ export class Manifest {
     pr: string | boolean;
     publish: boolean;
   }
-  config: any;
+  changelog: string = '';
+  config: ReleaseCommandConfig;
   pending: PendingManifest = {
     packages: {},
     releases: {},
@@ -126,7 +172,7 @@ export class Manifest {
   };
   constructor(inputs: CommandInput) {
     this.options = inputs.options as typeof this.options
-    this.config = inputs.config
+    this.config = inputs.config as ReleaseCommandConfig
     this.pending = readJson(this.config.manifestPath, {});
   }
 
@@ -162,6 +208,13 @@ export class Manifest {
     await this._checkImpactedPackages()
     await this._computeNewVersion()
     await this._printBumps()
+    await this._checkDependencies()
+    await this.config.hooks.onScanFinished(this.pending);
+    await this._updateChangelogs()
+    if (this.options.dryRun) return log('Dry run enabled, skipping release...');
+    await this._saveManifest()
+    await this._saveChangelogs()
+    await this._createOrUpdatePR()
   }
 
   async reset() {
@@ -181,14 +234,191 @@ export class Manifest {
     }
   }
 
+  async _saveChangelogs() {
+    return await Promise.all(Object.values(this.pending.releases).map(async (release) => {
+      let pkg = this.pending.packages[release.name]
+      if (!fs.existsSync(`${pkg.path}/CHANGELOG.md`)) {
+        fs.writeFileSync(`${pkg.path}/CHANGELOG.md`, pkg.changelog);
+        return this;
+      }
+      const changelog = fs.readFileSync(`${pkg.path}/CHANGELOG.md`).toString();
+      fs.writeFileSync(`${pkg.path}/CHANGELOG.md`, `${pkg.changelog}\n${changelog}`);
+    }))
+  }
+
+  async _createOrUpdatePR() {
+    await execute('git add .');
+    await execute('git commit -m "chore: bump versions & update changelogs"');
+    const currentBranch = (await execute('git rev-parse --abbrev-ref HEAD')).stdout.trim();
+    await execute(`git push --set-upstream origin ${currentBranch}`);
+    if (this.options.pr === true) {
+      await this._handleCreatePR(currentBranch)
+    } else if (this.options.pr !== false) {
+      log(`Updating PR [${c.blue(this.options.pr)}]`);
+      const pullRequest = await execute(
+        `gh pr edit ${this.options.pr} --add-label "autorelease: ready" --remove-label "autorelease: pending" --body "${this.changelog}"`,
+      ).then((x) => x.stdout);
+      log(`PR updated: ${pullRequest}`);
+    }
+  }
+
+  async _handleCreatePR(currentBranch: string) {
+    let pr = await this._findPR(currentBranch)
+    if (pr) {
+      log(`Updating PR [${c.blue(pr.number)}]`);
+      const pullRequest = await execute(`gh pr edit ${pr.number} --add-label "${this.config.pullRequest.labels.ready}" --remove-label "${this.config.pullRequest.labels.pending}" --body "${this.changelog}" 2 > &1`).then((x) => x.stdout);
+      log(`PR updated: ${pullRequest}`);
+    } else {
+      const pullRequest = await execute(
+        `gh pr create -B "${this.target}" --title "chore: release ${Object.values(this.pending.releases)
+          .map((release) => release.name + '@' + release.next)
+          .join(', ')}" --body "${this.changelog}" --label "${this.config.pullRequest.labels.ready}"`,
+      ).then((x) => x.stdout);
+      log(`New PR created: ${pullRequest}`);
+    }
+  }
+  async _findPR(currentBranch: string) {
+    let exists = await execute(
+      `gh pr list --state open -B ${this.options.target} -H ${currentBranch} --json number,title,headRefName,baseRefName,labels | jq`,
+    ).then((x) => x.stdout.trim());
+    if (exists && exists.length) {
+      return JSON.parse(exists)?.[0];
+    }
+    return false
+  }
+
+  _saveManifest() {
+    writeJson(this.config.manifestPath, this.pending);
+  }
+
+  async _updateChangelogs() {
+    const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+    log('Generating changelog');
+    let promises = Object.values(this.pending.releases).map(async (release) => {
+        return this._generateChangelog({ year, month, day, release })
+    })
+    await Promise.all(promises);
+
+    this.changelog = '';
+    this.changelog += `${this.config.pullRequest.header}
+---
+`;
+    Object.values(this.pending.packages).forEach((release) => {
+      if (!release.bump) return
+      this.changelog += `\n<details><summary>${release.json.name}: ${release.current} > ${release.next}</summary>
+${release.changelog}
+</details>`;
+    });
+
+    await this.config.hooks.onChangelog(this.changelog);
+
+  }
+
+  async _generateChangelog({
+    year,
+    month,
+    day,
+    release,
+  }: {
+    year: string;
+    month: string;
+    day: string;
+    release: Release;
+  }) {
+    let pkg = this.pending.packages[release.name]
+    pkg.changelog = '\n';
+    pkg.changelog += await this.config.hooks.generateHeader({ release: release, year, month, day, config: this.config });
+
+    const sections = this.config.sections.map((section: string) => {
+      return {
+        section,
+        commits: this.pending.commits.filter((commit: Commit) => commit.type === section),
+      };
+    });
+    const others = this.pending.commits.filter((commit: Commit) => !this.config.sections.includes(commit.type));
+    if (others.length) {
+      sections.push({
+        section: 'other',
+        commits: others,
+      });
+    }
+    sections.forEach((section: { section: string; commits: Commit[] }) => {
+      if (!section.commits.length) return;
+      if (section.commits?.length) {
+        pkg.changelog += `${this.config.pullRequest[section.section as keyof typeof this.config.pullRequest]}\n\n`;
+        for (const commit of section.commits) {
+          pkg.changelog += `* ${commit.message} ([${commit.hash.slice(0, 7)}](https://github.com/${
+            this.config.repository
+          }/commit/${commit.hash}))\n`;
+        }
+        pkg.changelog += '\n';
+      }
+    });
+    Object.keys(release.dependencies).forEach((depType) => {
+      let deps = release.dependencies[depType as keyof typeof release.dependencies]
+      if (deps.length) {
+        pkg.changelog += `${this.config.pullRequest.dependencies}\n\n`;
+        pkg.changelog += '* The following workspace dependencies were updated\n';
+        for (const dep of deps) {
+          let depPkg = this.pending.packages[dep.name]
+          pkg.changelog += `    * ${depPkg.name} bumped from ${dep.range} to ${depPkg.next}\n`;
+        }
+      }
+    })
+
+    return pkg.changelog;
+  }
+
+  async _checkDependencies() {
+    this.pending.releases = Object.values(this.pending.packages).reduce((acc, pkg) => {
+      if(pkg.bump === false) return acc
+      acc[pkg.name] = {
+        path: pkg.path,
+        name: pkg.name,
+        current: pkg.current,
+        next: pkg.next,
+        dependencies: {
+          base: [],
+          dev: [],
+          peer: []
+        }
+      }
+      return acc
+    }, {} as Record<string, Release>)
+    const releasedPackages = Object.keys(this.pending.releases)
+    for (const release of Object.values(this.pending.releases)) {
+      const json  = this.pending.packages[release.name].json
+      release.dependencies = {
+        base: this.hasInternalDependency(releasedPackages, json.dependencies),
+        dev: this.hasInternalDependency(releasedPackages, json.devDependencies),
+        peer: this.hasInternalDependency(releasedPackages, json.peerDependencies),
+      }
+    }
+
+    let releaseCount = Object.keys(this.pending.releases).length
+    if (!releaseCount) {
+      log('No packages to release, skipping...');
+      return;
+    }
+    log(`Preparing ${releaseCount} release${releaseCount ? 's' : ''}...`);
+  }
+
+  hasInternalDependency(releasedPackages: string[], deps: Record<string, string>) {
+    if (!deps) return []
+
+    return Object.keys(deps).filter((dep) => releasedPackages.includes(dep)).map((dep) => {
+      return {
+        name: dep,
+        range: deps[dep]
+      }
+    })
+  }
+
   async _printBumps() {
     for (const pkg of Object.values(this.pending.packages)) {
       if (pkg.bump === false) continue
       log(
-        `bumping ${c.bold(c.magenta(pkg.name))}`.padEnd(40),
-        `from ${c.bold(c.cyan(pkg.current.padEnd(8, ' ')))}`,
-        `to ${c.bold(c.green(pkg.next.padEnd(8, ' ')))}`,
-        `[${c.green(c[pkg.bump === 'major' ? 'red' : pkg.bump === 'minor' ? 'green' : 'yellow'](pkg.bump))}]`,
+        `bumping ${c.bold(c.magenta(pkg.name).padEnd(40, ' '))} from ${c.bold(c.cyan(pkg.current.padEnd(8, ' ')))} to ${c.bold(c.green(pkg.next.padEnd(8, ' ')))} [${c.green(c[pkg.bump === 'major' ? 'red' : pkg.bump === 'minor' ? 'green' : 'yellow'](pkg.bump))}]`,
       );
     }
   }
@@ -211,12 +441,12 @@ export class Manifest {
   async _checkImpactedPackages() {
     this.config.scan = this.config.scan.map((p: string) => path.resolve(p))
     this.pending.commits.forEach((commit) => {
-      const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(p)))
+      const files = commit.files.filter((file) => this.config.scan.some((p: string) => file.startsWith(p)))
       if (!files.length && this.config.rootPackage) this.addPackage(".", commit)
       else if (files.length) {
         let dirname = `${path.resolve('.')}/`
         files.forEach((file) => {
-          let fromScan = this.config.scan.find((p: string) => file.startsWith(p))
+          let fromScan = this.config.scan.find((p: string) => file.startsWith(p)) as string
           let packagePath = file.replace(`${fromScan}/`, '')
           let path = `${fromScan.replace(dirname, '')}/${packagePath.split('/')[0]}`
           this.addPackage(path, commit)
@@ -238,6 +468,7 @@ export class Manifest {
         json,
         name: json.name,
         bump: false,
+        changelog: '',
         current: json.version,
         next: json.version,
         dependencies: []
@@ -293,29 +524,21 @@ export class Manifest {
   }
     
   async _getCommitFiles(hash: string) {
-
     return await execute(
       `git diff-tree --no-commit-id --name-only --line-prefix=\`git rev-parse --show-toplevel\`/ -r ${hash}`,
     ).then((x) => x.stdout.trim().split('\n'));
   }
 
   async _checkBranches() {
-    // We need to check if the target branch exists on the remote
     const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
     if (targetBranch === 'false') {
       log(`Branch ${this.target} does not exist, creating it...`);
       await execute(`git checkout -b ${this.options.target} origin/${this.options.base || this.config.baseTarget}`);
       await execute(`git push origin ${this.options.target}`);
     }
-    //const {status} = await execute(`git checkout ${this.options.target}`);
-    //if (status !== 0) {
-    //  log(`Cannot checkout on ${this.target}...`);
-    //  process.exit(1);
-    //}
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
   }
-
 
   setPackageVersion(release: Release, version: string) {
     const json = readJson(`${release.path}/package.json`);
@@ -343,502 +566,3 @@ export class Manifest {
     return `${c.blue(this.options.target)}`
   }
 }
-
-
-//function formatVersion(version: string, bump: 'major' | 'minor' | 'patch') {
-//  const [major, minor, patch] = version.split('.').map(Number);
-//  if (bump === 'major') {
-//    return c.bold(`${c.red(`${major}`)}.${c.green(`0`)}.${c.yellow(`0`)}`);
-//  } else if (bump === 'minor') {
-//    return c.bold(`${major}.${c.green(`${minor}`)}.${c.yellow(`0`)}`);
-//  } else {
-//    return c.bold(`${major}.${minor}.${c.yellow(`${patch}`)}`);
-//  }
-//}
-
-//export type ReleaseCommandOptions = {
-//  repository: string;
-//  manifestPath: string;
-//  baseTarget: string;
-//  rootPackage: boolean;
-//  scan: string[];
-//  pullRequest: {
-//    labels: string[];
-//    title: string;
-//    header: string;
-//    fix: string;
-//    feat: string;
-//    docs: string;
-//    test: string;
-//    chore: string;
-//    dependencies: string;
-//    other: string;
-//  };
-//  sections: string[];
-//  hooks: {
-//    generateHeader: (args: { release: Release; year: string; month: string; day: string }) => string;
-//    generateTag: (release: Release, version: string) => string;
-//    onChangelog: () => void;
-//    onScanFinished: () => void;
-//    onPublish: () => void;
-//  };
-//}
-
-
-
-//export class Manifest {
-//  path: string;
-//  source: string = '';
-//  target: string = '';
-//  config: any;
-//  changelog: string = '';
-//  commits: Commit[] = [];
-//  releases: Map<string, Release> = new Map();
-//  constructor({ path }: { path: string }) {
-//    this.path = path;
-//    this.config = readJson(path);
-//    if (this.config?.releases?.length) {
-//      this.reset();
-//    }
-//  }
-
-//  async generate({
-//    source,
-//    target,
-//    hasRootPackage,
-//    scan,
-//  }: {
-//    source: string;
-//    target: string;
-//    hasRootPackage: boolean;
-//    scan: string[];
-//  }) {
-//    log(`Scanning commits between ${target} and ${source}...`);
-//    this.target = target;
-//    this.source = source;
-//    if (hasRootPackage) {
-//      this.releases.set(
-//        '@root',
-//        new Release({
-//          path: '.',
-//          name: '@root',
-//        }),
-//      );
-//    }
-
-//    const logs = await execute(
-//      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${source}...origin/${target}`,
-//    ).then((x) => x.stdout);
-//    this.commits = await Promise.all(
-//      logs
-//        .split('\n')
-//        .filter((log: string) => log)
-//        .map(async (log: string) => {
-//          const [hash, timestamp, ...message] = log.split(' ');
-//          const commit = new Commit({ hash, timestamp, message: message.join(' ') });
-//          await commit.getFiles(hash);
-//          return commit;
-//        }),
-//    );
-//    if (!this.commits.length) {
-//      log('No commits found, skipping release...');
-//      process.exit(0);
-//    }
-//    log(`${c.blue(this.commits.length)} commits found`);
-//    const files = this.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
-//    log(`${c.blue(files.length)} files changed`);
-
-//    for (const commit of this.commits) {
-//      await commit.checkImpact(
-//        scan.map((p) => path.resolve(p)),
-//        hasRootPackage,
-//        this.releases,
-//      );
-//    }
-
-//    const isPrerelease = this.target.includes('/pre-') ? this.target.split('/pre-')[1] : false;
-//    const isHotfix = this.target.includes('/fix-') ? this.target.split('/fix-')[1] : false;
-
-//    for (const release of this.releases.values()) {
-//      release.next = await release.computeNewVersion(isPrerelease || isHotfix);
-//    }
-
-//    const maxLength = Math.max(...Array.from(this.releases.values()).map((release) => release.json.name.length));
-
-//    Array.from(this.releases.values())
-//      .filter((release) => {
-//        if (release.commits.length) {
-//          log(
-//            `bumping ${c.bold(c.magenta(release.json.name))}`.padEnd((9 + maxLength) * 2, ' '),
-//            `from ${c.bold(c.cyan(release.current.padEnd(8, ' ')))}`,
-//            `to ${formatVersion(release.next, release.bump as Bump)}${release.next
-//              .padEnd(8, ' ')
-//              .replace(release.next, '')}`,
-//            `[${c.green(
-//              c[release.bump === 'major' ? 'red' : release.bump === 'minor' ? 'green' : 'yellow'](release.bump),
-//            )}]`,
-//          );
-//          return true;
-//        }
-//        return false;
-//      })
-//      .forEach((release) => {
-//        const dependencies = release.json.dependencies || {};
-//        const devDependencies = release.json.devDependencies || {};
-//        const peerDependencies = release.json.peerDependencies || {};
-//        const allDependencies = { ...dependencies, ...devDependencies, ...peerDependencies };
-//        for (const dep of Object.keys(allDependencies)) {
-//          if (this.releases.has(dep)) {
-//            release.addDependency(this.releases.get(dep) as Release, allDependencies[dep]);
-//          }
-//        }
-//      });
-
-//    return this;
-//  }
-
-//  async createOrUpdatePR({ options, commandConfig }: { options: Record<string, any>; commandConfig: any }) {
-//    await execute('git add .');
-//    await execute('git commit -m "chore: bump versions & update changelogs"');
-//    const currentBranch = (await execute('git rev-parse --abbrev-ref HEAD')).stdout;
-//    await execute(`git push --set-upstream origin ${currentBranch}`);
-//    if (options.pr && options.pr !== true) {
-//      log(`Updating PR: ${options.pr}`);
-//      const prUrl = await execute(
-//        `gh pr edit ${options.pr} --add-label "autorelease: ready" --remove-label "autorelease: pending" --body "${this.changelog}"`,
-//      ).then((x) => x.stdout);
-//      log(`PR updated: ${prUrl}`);
-//    } else if (options.pr) {
-//      const exists = await execute(
-//        `gh pr list --state open -B ${this.target} -H ${currentBranch} --label="autorelease: pending" --json number,title,headRefName,baseRefName,labels | jq`,
-//      ).then((x) => x.stdout);
-//      console.log(exists);
-//      if (exists && exists.length) {
-//        const pr = JSON.parse(exists);
-//        log(`Updating PR: ${pr[0].number}`);
-//        const prUrl = await execute(
-//          `gh pr edit ${pr[0].number} --add-label "autorelease: ready"  --remove-label "autorelease: pending" --body "${this.changelog}"`,
-//        ).then((x) => x.stdout);
-//        log(`PR updated: ${prUrl}`);
-//      } else {
-//        const pullRequest = await execute(
-//          `gh pr create -B "${this.target}" --title "chore: release ${Array.from(this.releases.values())
-//            .map((release) => release.json.name + '@' + release.next)
-//            .join(', ')}" --body "${this.changelog}" --label "autorelease: ready"`,
-//        ).then((x) => x.stdout);
-//        log(`New PR created: ${pullRequest}`);
-//      }
-//    }
-//  }
-
-//  applyBumps() {
-//    for (const release of this.releases.values()) {
-//      const json = readJson(`${release.path}/package.json`);
-//      json.version = release.next;
-//      writeJson(`${release.path}/package.json`, json);
-//    }
-//    return this;
-//  }
-
-//  updateChangelogs() {
-//    for (const release of this.releases.values()) {
-//      if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) {
-//        fs.writeFileSync(`${release.path}/CHANGELOG.md`, release.changelog);
-//        return this;
-//      }
-//      const changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
-//      fs.writeFileSync(`${release.path}/CHANGELOG.md`, `${release.changelog}\n${changelog}`);
-//    }
-
-//    return this;
-//  }
-
-//  resetChangelogs() {
-//    for (const release of this.releases.values()) {
-//      if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) {
-//        fs.writeFileSync(`${release.path}/CHANGELOG.md`, '');
-//        return;
-//      }
-//      let changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
-//      changelog = changelog.replace(release.changelog + '\n', '');
-//      fs.writeFileSync(`${release.path}/CHANGELOG.md`, changelog);
-//    }
-
-//    return this;
-//  }
-
-//  save() {
-//    fs.writeFileSync(
-//      this.path,
-//      JSON.stringify(
-//        {
-//          releases: [...this.releases.values()].map((release) => {
-//            return {
-//              path: release.path,
-//              current: release.current,
-//              next: release.next,
-//              name: release.name,
-//              changelog: release.changelog,
-//              dependencies: release.dependencies.map((dep) => {
-//                return {
-//                  previous: dep.range,
-//                  path: dep.path,
-//                  current: dep.current,
-//                  next: dep.next,
-//                  nextRange: dep.nextRange,
-//                  name: dep.name,
-//                };
-//              }),
-//            };
-//          }),
-//        },
-//        null,
-//        2,
-//      ),
-//    );
-
-//    return this;
-//  }
-
-//  async generateChangelog({
-//    year,
-//    month,
-//    day,
-//    commandConfig,
-//  }: {
-//    year: string;
-//    month: string;
-//    day: string;
-//    commandConfig: any;
-//  }) {
-//    log('Generating changelog');
-//    await Promise.all(
-//      Array.from(this.releases.values()).map(async (release) =>
-//        release.generateChangelog({ year, month, day, commandConfig }),
-//      ),
-//    );
-
-//    this.changelog = '';
-//    this.changelog += `${commandConfig.pullRequest.header}
-//---
-//`;
-//    this.releases.forEach((release) => {
-//      this.changelog += `\n<details><summary>${release.json.name}: ${release.current} > ${release.next}</summary>
-//${release.changelog}
-//</details>`;
-//    });
-
-//    await commandConfig.hooks.onChangelog(this);
-//  }
-
-//  async reset() {
-//    log('Resetting from previous manifest');
-//    if (this.config?.releases) {
-//      this.releases = this.config.releases.map((release: any) => {
-//        release.next = release.current;
-//        return release;
-//      });
-//      this.applyBumps().resetChangelogs();
-//      this.releases = new Map();
-//    }
-//  }
-//}
-
-//export type Bump = 'major' | 'minor' | 'patch';
-
-//export class Release {
-//  name: string;
-//  path: string;
-//  range: string = '';
-//  nextRange: string = '';
-//  current: string;
-//  next: string = '';
-//  changelog: string = '';
-//  bump: Bump | false = false;
-//  commits: Commit[] = [];
-//  dependencies: Release[] = [];
-//  json: any;
-//  constructor({ path, name }: { path: string; name: string }) {
-//    this.path = path;
-//    this.name = name;
-//    this.json = readJson(this.path + '/package.json');
-//    this.current = this.json.version || '0.0.0';
-//  }
-
-//  async addCommit(commit: Commit) {
-//    this.commits.push(commit);
-//    if (commit.breaking) this.bump = 'major';
-//    if (commit.type == 'feat' && this.bump != 'major') this.bump = 'minor';
-//    if (this.bump == false) this.bump = 'patch';
-//  }
-
-//  addDependency(release: Release, range: string) {
-//    if (release.next != '') {
-//      if (range === 'workspace:*') {
-//        release.range = range;
-//        release.nextRange = release.next;
-//        this.dependencies.push(release);
-//        log(
-//          `${c.bold(c.magenta(this.json.name))}: bumping ${c.green(
-//            release.json.name,
-//          )} from workspace to ${formatVersion(release.next, release.bump as Bump)!} [${c.bold(
-//            c[release.bump === 'major' ? 'red' : release.bump === 'minor' ? 'green' : 'yellow'](release.bump),
-//          )}]`,
-//        );
-//        return;
-//      }
-//      if (!/^[\^~]/.test(range as string)) {
-//        log(
-//          `${c.bold(c.magenta(this.json.name))}: skipping bump of ${
-//            release.json.name
-//          } because version is fixed: ${range}`,
-//        );
-//        return;
-//      }
-//      if (String(range).startsWith('~') && release.bump == 'patch') {
-//        release.range = range;
-//        release.nextRange = `~${release.next}`;
-//        this.dependencies.push(release);
-//        log(
-//          `${c.bold(c.magenta(this.json.name))}: bumping ${c.green(release.json.name)} from ${c.bold(
-//            c.blue(range),
-//          )} to ~${formatVersion(release.next, release.bump)} [${c.bold(c['yellow'](release.bump))}]`,
-//        );
-//      }
-//      if (String(range).startsWith('^') && ['minor', 'patch'].includes(release.bump as Bump)) {
-//        release.range = range;
-//        release.nextRange = `^${release.next}`;
-//        this.dependencies.push(release);
-//        log(
-//          `${c.bold(c.magenta(this.json.name))}: bumping ${c.green(release.json.name)} from ${c.bold(
-//            c.blue(range),
-//          )} to ^${formatVersion(release.next, release.bump as Bump)} [${c.bold(
-//            c[release.bump === 'major' ? 'red' : release.bump === 'minor' ? 'green' : 'yellow'](release.bump),
-//          )}]`,
-//        );
-//      }
-//    }
-//  }
-
-//  async computeNewVersion(isPrerelease: string | false) {
-//    const { stdout } = await execute(
-//      `pnpm version ${isPrerelease ? `prerelease` : this.bump} ${
-//        isPrerelease ? `--preid=${isPrerelease}` : ''
-//      } --no-git-tag-version --allow-same-version`,
-//      {
-//        cwd: this.path,
-//      },
-//    );
-//    writeJson(this.path + '/package.json', {
-//      ...this.json,
-//      version: this.current,
-//    });
-//    return stdout.trim().replace(/^v/, '');
-//  }
-
-//  async generateChangelog({
-//    year,
-//    month,
-//    day,
-//    commandConfig,
-//  }: {
-//    year: string;
-//    month: string;
-//    day: string;
-//    commandConfig: any;
-//  }) {
-//    this.changelog = '\n';
-//    this.changelog += await commandConfig.hooks.generate.header({ release: this, year, month, day, commandConfig });
-
-//    const sections = commandConfig.sections.map((section: string) => {
-//      return {
-//        section,
-//        commits: this.commits.filter((commit: Commit) => commit.type === section),
-//      };
-//    });
-//    const others = this.commits.filter((commit: Commit) => !commandConfig.sections.includes(commit.type));
-//    if (others.length) {
-//      sections.push({
-//        section: 'other',
-//        commits: others,
-//      });
-//    }
-//    sections.forEach((section: { section: string; commits: Commit[] }) => {
-//      if (!section.commits.length) return;
-//      if (section.commits?.length) {
-//        this.changelog += `${commandConfig.pullRequest[section.section as keyof typeof commandConfig.pullRequest]}\n\n`;
-//        for (const commit of section.commits) {
-//          this.changelog += `* ${commit.message} ([${commit.hash.slice(0, 7)}](https://github.com/${
-//            commandConfig.repository
-//          }/commit/${commit.hash}))\n`;
-//        }
-//        this.changelog += '\n';
-//      }
-//    });
-
-//    if (this.dependencies.length) {
-//      this.changelog += `${commandConfig.pullRequest.dependencies}\n\n`;
-//      this.changelog += '* The following workspace dependencies were updated\n';
-//      for (const [dep, current, next] of this.dependencies.map((dep) => [dep.name, dep.current, dep.next])) {
-//        this.changelog += `    * ${dep} bumped from ${current} to ${next}\n`;
-//      }
-//    }
-
-//    return this.changelog;
-//  }
-//}
-
-//export class Commit {
-//  hash: string;
-//  date: Date;
-//  message: string;
-//  scope: string;
-//  type: string;
-//  breaking: boolean;
-//  files: string[] = [];
-
-//  constructor({ hash, timestamp, message }: { hash: string; timestamp: string; message: string }) {
-//    this.hash = hash;
-//    this.date = new Date(Number(timestamp) * 1000);
-//    this.message = message;
-//    this.scope = message.split('(')[1]?.split(')')[0];
-//    this.type = message.split(':')[0].replace(`(${this.scope})`, '');
-//    this.breaking = this.type.includes('!');
-//    if (this.breaking) {
-//      this.type = this.type.replace('!', '');
-//    }
-//  }
-
-//  async getFiles(hash: string) {
-//    this.files = await execute(
-//      `git diff-tree --no-commit-id --name-only --line-prefix=\`git rev-parse --show-toplevel\`/ -r ${hash}`,
-//    ).then((x) => x.stdout.split('\n').filter((x) => x));
-//  }
-
-//  async checkImpact(scan: string[], hasRootPackage: boolean, releases: Map<string, Release>) {
-//    const packagesFiles = this.files.filter((file) => scan.some((p) => file.startsWith(p)));
-//    if (!packagesFiles.length && hasRootPackage) {
-//      await releases.get('@root')?.addCommit(this);
-//    } else {
-//      const packages = new Map<string, { name: string; path: string }>();
-//      for (const file of packagesFiles) {
-//        const pkg = scan.find((p) => file.startsWith(p));
-//        const pkgRoot = pkg?.split('/').pop();
-//        const pkgFile = file.replace(pkg + '/', '');
-//        const pkgName = pkgFile.split('/')[0];
-//        if (!packages.has(pkgName)) {
-//          packages.set(pkgName, {
-//            path: `${pkgRoot}/${pkgName}`,
-//            name: pkgName,
-//          });
-//        }
-//      }
-//      packages.forEach((pkg) => {
-//        if (!releases.has(pkg.name)) {
-//          releases.set(pkg.name, new Release(pkg));
-//        }
-//        releases.get(pkg.name)?.addCommit(this);
-//      });
-//    }
-//  }
-//}
