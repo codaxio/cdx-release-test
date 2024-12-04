@@ -270,7 +270,7 @@ export class Manifest {
       log(`PR updated: ${pullRequest}`);
     } else {
       const pullRequest = await execute(
-        `gh pr create -B "${this.target}" --title "chore: release ${Object.values(this.pending.releases)
+        `gh pr create -B "${this.options.target}" --title "chore: release ${Object.values(this.pending.releases)
           .map((release) => release.name + '@' + release.next)
           .join(', ')}" --body "${this.changelog}" --label "${this.config.pullRequest.labels.ready}"`,
       ).then((x) => x.stdout);
