@@ -238,11 +238,11 @@ export class Manifest {
       await execute(`git checkout -b ${this.options.target} origin/${this.options.base || this.config.baseTarget}`);
       await execute(`git push origin ${this.options.target}`);
     }
-    const {status} = await execute(`git checkout ${this.options.target}`);
-    if (status !== 0) {
-      log(`Cannot checkout on ${this.target}...`);
-      process.exit(1);
-    }
+    //const {status} = await execute(`git checkout ${this.options.target}`);
+    //if (status !== 0) {
+    //  log(`Cannot checkout on ${this.target}...`);
+    //  process.exit(1);
+    //}
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
   }
