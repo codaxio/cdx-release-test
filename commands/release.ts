@@ -491,7 +491,7 @@ ${release.changelog}
     log(`Scanning commits from [${this.source}] to [${this.target}]...`);
 
     const commits = await execute(
-      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
+      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.target}...${this.options.source}`,
     ).then((x) => x.stdout);
     this.pending.commits = await Promise.all(commits.trim().split('\n').map(this._extractCommitData.bind(this)));
     if (!this.pending.commits.length) {
