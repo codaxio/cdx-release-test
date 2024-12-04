@@ -8,34 +8,6 @@
       "dependencies": {
         "dev": []
       }
-    },
-    "pkg1": {
-      "path": "packages/pkg1",
-      "name": "pkg1",
-      "current": "0.1.0",
-      "next": "0.2.0",
-      "dependencies": {}
-    },
-    "svc1": {
-      "path": "packages/svc1",
-      "name": "svc1",
-      "current": "0.1.0",
-      "next": "0.2.0",
-      "dependencies": {
-        "base": [
-          {
-            "name": "pkg1",
-            "range": "workspace:*"
-          }
-        ]
-      }
-    },
-    "svc2": {
-      "path": "packages/svc2",
-      "name": "svc2",
-      "current": "0.1.0",
-      "next": "0.2.0",
-      "dependencies": {}
     }
   }
 }
