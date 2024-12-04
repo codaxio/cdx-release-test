@@ -7,6 +7,7 @@ export default {
   release: {
     repository: 'codaxio/cdx-release-test',
     scan: ['packages'],
+    rootPackage: true,
     hooks: {
       buildAndPublish: async (release: Release) => {
         const json = readJson(`${release.path}/package.json`);

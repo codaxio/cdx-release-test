@@ -95,6 +95,7 @@ export default class ReleaseCommand extends BaseCommand {
   async run(inputs: CommandInput) {
     log(`Running release command with options:`);
     console.log(inputs.options)
+    console.log(inputs.config)
     const manifest = await Manifest.init(inputs)
   }
 }
