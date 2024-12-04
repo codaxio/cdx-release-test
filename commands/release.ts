@@ -28,10 +28,10 @@ export type Release = {
   path: string;
   current: string;
   next: string;
-  dependencies: {
-    base: { name: string; range: string }[];
-    dev: { name: string; range: string }[];
-    peer: { name: string; range: string }[];
+  dependencies?: {
+    base?: { name: string; range: string }[];
+    dev?: { name: string; range: string }[];
+    peer?: { name: string; range: string }[];
   };
 }
 
@@ -355,9 +355,9 @@ ${release.changelog}
         pkg.changelog += '\n';
       }
     });
-    Object.keys(release.dependencies).forEach((depType) => {
-      let deps = release.dependencies[depType as keyof typeof release.dependencies]
-      if (deps.length) {
+    Object.keys(release.dependencies || {}).forEach((depType) => {
+      let deps = release.dependencies?.[depType as keyof typeof release.dependencies]
+      if (deps?.length) {
         pkg.changelog += `${this.config.pullRequest.dependencies}\n\n`;
         pkg.changelog += '* The following workspace dependencies were updated\n';
         for (const dep of deps) {
@@ -389,11 +389,11 @@ ${release.changelog}
     const releasedPackages = Object.keys(this.pending.releases)
     for (const release of Object.values(this.pending.releases)) {
       const json  = this.pending.packages[release.name].json
-      release.dependencies = {
+      release.dependencies = JSON.parse(JSON.stringify({
         base: this.hasInternalDependency(releasedPackages, json.dependencies),
         dev: this.hasInternalDependency(releasedPackages, json.devDependencies),
         peer: this.hasInternalDependency(releasedPackages, json.peerDependencies),
-      }
+      }))
     }
 
     await this.config.hooks.onScanFinished(this.pending);
@@ -406,7 +406,7 @@ ${release.changelog}
   }
 
   hasInternalDependency(releasedPackages: string[], deps: Record<string, string>) {
-    if (!deps) return []
+    if (!deps) return undefined
 
     return Object.keys(deps).filter((dep) => releasedPackages.includes(dep)).map((dep) => {
       return {
