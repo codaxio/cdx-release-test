@@ -1,5 +1,5 @@
 import { BaseCommand, c, execute, readJson, writeJson, type CommandInput } from '@codaxio/cdx';
-import fs from 'fs';
+import fs, { writeFileSync } from 'fs';
 import path from 'path';
 
 export function log(...msg: unknown[]) {
@@ -81,7 +81,8 @@ export default class ReleaseCommand extends BaseCommand {
   };
 
   async run(inputs: CommandInput) {
-    log(`Running release command with options:\n${inputs.options}`);
+    log(`Running release command with options:`);
+    console.log(inputs.options)
     const manifest = await Manifest.init(inputs)
   }
 }
@@ -152,9 +153,13 @@ export class Manifest {
     writeJson(`${release.path}/package.json`, json);
   }
   resetChangelog(release: Release) {
+    log(`Resetting changelog for ${release.name}`, release.path);
+    if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) return
     let changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
-    console.log(changelog)
-    process.exit(0)
+    let chunk = changelog.split(`## [${release.next}]`)
+    if (chunk.length < 2) return
+    let final = `## [${release.next}]${chunk[1].split('## [')[0]}` 
+    writeFileSync(`${release.path}/CHANGELOG.md`, changelog.replace(final, ''));
   }
 
   async _checkBranches() {
