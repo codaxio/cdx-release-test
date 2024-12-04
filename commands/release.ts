@@ -179,7 +179,8 @@ export class Manifest {
         files.forEach((file) => {
           let fromScan = this.config.scan.find((p) => file.startsWith(p))
           let packagePath = file.replace(fromScan, '').split('/')[0]
-          console.log(packagePath)
+          console.log({packagePath})
+          console.log({fromScan})
         })
       }
     })
