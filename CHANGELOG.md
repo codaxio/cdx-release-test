@@ -3,6 +3,7 @@
 
 ### Features
 
+* feat: workflow ([94290cf](https://github.com/codaxio/cdx-release-test/commit/94290cf90597c1e2a3e80acab404a8807e7dcf26))
 * feat: workflow ([7d1a891](https://github.com/codaxio/cdx-release-test/commit/7d1a891b310a4bdaad4afa9310ad974606fbb437))
 * feat: workflow ([40079a5](https://github.com/codaxio/cdx-release-test/commit/40079a597cee809ff8e9b9cebd81edc8c5664adb))
 * feat: workflow ([741c5c2](https://github.com/codaxio/cdx-release-test/commit/741c5c2ac44f218cf4fb7b0cde82c464df7d2fbc))
@@ -49,12 +50,9 @@
 * feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))
 * feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))
 
-### Bug Fixes
-
-* fix: dump ([aeafdac](https://github.com/codaxio/cdx-release-test/commit/aeafdac52f8c5ddb11e384cded3742909057dfbf))
-
 ### Other Changes
 
+* chore: bump versions & update changelogs ([8d452ee](https://github.com/codaxio/cdx-release-test/commit/8d452ee18e11894dea6a951f934f4c0e16696462))
 * chore: bump versions & update changelogs ([13d9ee7](https://github.com/codaxio/cdx-release-test/commit/13d9ee7e82cb34b8bad1e11bf8ff5c4807996af1))
 * chore: bump versions & update changelogs ([cf34464](https://github.com/codaxio/cdx-release-test/commit/cf3446463387c60d35e27f343b2e5428c07ddc80))
 * chore: bump versions & update changelogs ([e6a3d95](https://github.com/codaxio/cdx-release-test/commit/e6a3d95f3fac3bada27125e8b52a31fed9e327d1))
