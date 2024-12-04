@@ -168,6 +168,10 @@ export class Manifest {
   async _scanCommits() {
     log(`Scanning commits between ${this.target} and ${this.source}...`);
 
+    const commits = await execute(
+      `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
+    ).then((x) => x.stdout);
+    console.log(commits)
   }
 
   async _checkBranches() {
@@ -178,7 +182,11 @@ export class Manifest {
       await execute(`git checkout -b ${this.options.target} origin/${this.options.base || this.config.baseTarget}`);
       await execute(`git push origin ${this.options.target}`);
     }
-    await execute(`git checkout ${this.options.target}`);
+    const {status} = await execute(`git checkout ${this.options.target}`);
+    if (status !== 0) {
+      log(`Cannot checkout on ${this.target}...`);
+      process.exit(1);
+    }
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
   }
