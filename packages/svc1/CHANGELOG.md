@@ -3,6 +3,7 @@
 
 ### Features
 
+* feat: workflow ([7d1a891](https://github.com/codaxio/cdx-release-test/commit/7d1a891b310a4bdaad4afa9310ad974606fbb437))
 * feat: workflow ([40079a5](https://github.com/codaxio/cdx-release-test/commit/40079a597cee809ff8e9b9cebd81edc8c5664adb))
 * feat: workflow ([741c5c2](https://github.com/codaxio/cdx-release-test/commit/741c5c2ac44f218cf4fb7b0cde82c464df7d2fbc))
 * feat: workflow ([afcc8fb](https://github.com/codaxio/cdx-release-test/commit/afcc8fbabc3689202eeca5ada22627b912d5d385))
@@ -50,6 +51,7 @@
 
 ### Other Changes
 
+* chore: bump versions & update changelogs ([cf34464](https://github.com/codaxio/cdx-release-test/commit/cf3446463387c60d35e27f343b2e5428c07ddc80))
 * chore: bump versions & update changelogs ([e6a3d95](https://github.com/codaxio/cdx-release-test/commit/e6a3d95f3fac3bada27125e8b52a31fed9e327d1))
 * chore: bump versions & update changelogs ([652a8fb](https://github.com/codaxio/cdx-release-test/commit/652a8fb6c10315842944039f8124c981c08416f7))
 * chore: bump versions & update changelogs ([df55d4d](https://github.com/codaxio/cdx-release-test/commit/df55d4d443ceec5d5e37098460d9558319830f19))
