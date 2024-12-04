@@ -174,11 +174,11 @@ export class Manifest {
       const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(path.resolve(p))))
       if (!files.length && this.config.rootPackage) root.push(commit)
       else if (files.length) {
-        let dirname = path.resolve('./')
+        let dirname = path.resolve('.')
         console.log({
           files,
           dirname,
-          file: files[0].replace(dirname, ''),
+          file: files[0].replace(`${dirname}/`, ''),
         })
       }
     })
