@@ -3,6 +3,8 @@ import fs from 'fs';
 
 import { log, type Release } from './commands/release';
 
+
+
 export default {
   release: {
     repository: 'codaxio/cdx-release-test',
@@ -89,73 +91,73 @@ export default {
         }
       },
       onPublish: async (
-        manifest: {
-          releases: Release[];
-        },
-        commandConfig: any,
+        releases: Record<string, Release>,
+        config: any,
         prId: string,
       ) => {
-        // Build packages
-        const releases = manifest.releases;
-        if (!releases) {
-          log('No releases found');
-          return;
-        }
-        const dependencies = releases
-          .map((r) => r.dependencies)
-          .flat()
-          // filter duplicate by name
-          .filter((dep, i, a) => a.findIndex((d) => d.name === dep.name) === i);
-        const dependenciesNames = dependencies.map((x) => x.name);
 
-        let released = [];
-        if (dependenciesNames.length) {
-          await execute(`echo pnpm --workspace-concurrency Infinity -F ${dependenciesNames.join(' -F ')} build`, {
-            stdout: process.stdout,
-          });
-          released.push(
-            ...(await Promise.all(dependencies.map(async (dep) => await commandConfig.hooks.buildAndPublish(dep)))),
-          );
-        }
-        const unreleased = releases.filter((r) => !dependenciesNames.includes(r.name));
-        unreleased.forEach((release) => {
-          const json = readJson(`${release.path}/package.json`);
-          release.dependencies.forEach((dep) => {
-            if (json.dependencies?.[dep.name]) json.dependencies[dep.name] = dep.nextRange;
-            if (json.devDependencies?.[dep.name]) json.devDependencies[dep.name] = dep.nextRange;
-            if (json.peerDependencies?.[dep.name]) json.peerDependencies[dep.name] = dep.nextRange;
-          });
-          console.log(`Update ${release.name} dependencies`, json);
-          writeJson(`${release.path}/package.json`, json);
-        });
+        console.log('releases', releases);
+        //// Build packages
+        //const releases = manifest.releases;
+        //if (!releases) {
+        //  log('No releases found');
+        //  return;
+        //}
+        //const dependencies = releases
+        //  .map((r) => r.dependencies)
+        //  .flat()
+        //  // filter duplicate by name
+        //  .filter((dep, i, a) => a.findIndex((d) => d.name === dep.name) === i);
+        //const dependenciesNames = dependencies.map((x) => x.name);
 
-        console.log("Bump dependencies", await execute(`pnpm install`))
-        const releasesNames = unreleased.map((x) => x.name);
-        if (releasesNames.length) {
-          await execute(`echo pnpm --workspace-concurrency Infinity -F ${releasesNames.join(' -F ')} build`, {
-            stdout: process.stdout,
-          });
-          released.push(
-            ...(await Promise.all(
-              unreleased.map(async (release) => await commandConfig.hooks.buildAndPublish(release)),
-            )),
-          );
-        }
+        //let released = [];
+        //if (dependenciesNames.length) {
+        //  await execute(`echo pnpm --workspace-concurrency Infinity -F ${dependenciesNames.join(' -F ')} build`, {
+        //    stdout: process.stdout,
+        //  });
+        //  released.push(
+        //    ...(await Promise.all(dependencies.map(async (dep) => await commandConfig.hooks.buildAndPublish(dep)))),
+        //  );
+        //}
+        //const unreleased = releases.filter((r) => !dependenciesNames.includes(r.name));
+        //unreleased.forEach((release) => {
+        //  const json = readJson(`${release.path}/package.json`);
+        //  release.dependencies.forEach((dep) => {
+        //    if (json.dependencies?.[dep.name]) json.dependencies[dep.name] = dep.nextRange;
+        //    if (json.devDependencies?.[dep.name]) json.devDependencies[dep.name] = dep.nextRange;
+        //    if (json.peerDependencies?.[dep.name]) json.peerDependencies[dep.name] = dep.nextRange;
+        //  });
+        //  console.log(`Update ${release.name} dependencies`, json);
+        //  writeJson(`${release.path}/package.json`, json);
+        //});
 
-        released = released.filter((x) => x);
-        await execute(
-          `gh pr comment ${prId} --body "Packages published:\n\n ${released
-            .map((x) => `${x.digest ? `ECR ${x.tag} = "sha256:${x.digest}"` : `CodeArtifact: ${x.tag}`}`)
-            .join('\n')}"`,
-        );
-        await execute(
-          `gh pr edit ${prId} --add-label="autorelease: published" --remove-label="autorelease: ready"  --remove-label="autorelease: ready"`,
-        );
-        console.log(await execute(`git status`));
-        console.log(await execute(`pnpm install`));
-        await execute(`git add .`);
-        await execute(`git commit -m "chore: update internal dependencies"`);
-        await execute(`git push`);
+        //console.log("Bump dependencies", await execute(`pnpm install`))
+        //const releasesNames = unreleased.map((x) => x.name);
+        //if (releasesNames.length) {
+        //  await execute(`echo pnpm --workspace-concurrency Infinity -F ${releasesNames.join(' -F ')} build`, {
+        //    stdout: process.stdout,
+        //  });
+        //  released.push(
+        //    ...(await Promise.all(
+        //      unreleased.map(async (release) => await commandConfig.hooks.buildAndPublish(release)),
+        //    )),
+        //  );
+        //}
+
+        //released = released.filter((x) => x);
+        //await execute(
+        //  `gh pr comment ${prId} --body "Packages published:\n\n ${released
+        //    .map((x) => `${x.digest ? `ECR ${x.tag} = "sha256:${x.digest}"` : `CodeArtifact: ${x.tag}`}`)
+        //    .join('\n')}"`,
+        //);
+        //await execute(
+        //  `gh pr edit ${prId} --add-label="autorelease: published" --remove-label="autorelease: ready"  --remove-label="autorelease: ready"`,
+        //);
+        //console.log(await execute(`git status`));
+        //console.log(await execute(`pnpm install`));
+        //await execute(`git add .`);
+        //await execute(`git commit -m "chore: update internal dependencies"`);
+        //await execute(`git push`);
       },
     },
   },

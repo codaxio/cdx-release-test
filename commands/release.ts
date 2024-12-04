@@ -81,7 +81,11 @@ export type ReleaseCommandConfig = {
     generateTag: (release: Release, version: string) => Promise<string>;
     onScanFinished: (manifest: PendingManifest) => Promise<void>;
     onChangelog: (changelog: string) => Promise<void>;
-    onPublish: () => Promise<void>;
+    onPublish: (inputs: {
+      releases: Record<string, Release>,
+      config: ReleaseCommandConfig,
+      prId: string | boolean
+    }) => Promise<void>;
   };
 }
 export default class ReleaseCommand extends BaseCommand {
@@ -141,7 +145,11 @@ export default class ReleaseCommand extends BaseCommand {
       generateTag: async (release: Release, version: string) => `${release.name}-v${version}`,
       onChangelog: async () => {},
       onScanFinished: async () => {},
-      onPublish: async () => {},
+      onPublish: async ({
+        config, releases, prId
+      }) => {
+        console.log('publishing hook', releases, { prId })
+      },
     }
   };
 
@@ -185,18 +193,19 @@ export class Manifest {
 
   async publish() {
     console.log('publishing', this.pending)
-    //if (!fs.existsSync(commandConfig.manifestPath)) {
-    //  log('No manifest found, skipping release...');
-    //  process.exit(0);
-    //}
-    //await execute(
-    //  `git fetch origin ${options.target} 2> /dev/null || (git checkout -b ${options.target} origin/${commandConfig.baseTarget} && git push origin ${options.target})`,
-    //);
-    //console.log(await execute(`git checkout ${options.target}`))
-    //log('Publishing packages...');
-    //const manifest = JSON.parse(fs.readFileSync(commandConfig.manifestPath).toString());
-    //await commandConfig.hooks.onPublish(manifest, commandConfig, options.pr);
-    //process.exit(0);
+    console.log('currentBranch', await execute('git rev-parse --abbrev-ref HEAD').then((x) => x.stdout.trim()))
+    const targetBranch = await execute(`git fetch origin ${this.options.target} 2> /dev/null || echo false`).then((x) => x.stdout.trim());
+    if (targetBranch === 'false') {
+      log(`Target branch ${this.target} does not exist, aborting release...`);
+    }
+    console.log(await execute(`git checkout ${this.options.target}`))
+    log('Publishing packages...');
+    await this.config.hooks.onPublish({
+      releases: this.pending.releases,
+      config: this.config,
+      prId: this.options.pr,
+    });
+    process.exit(0);
   }
 
   async generate() {
