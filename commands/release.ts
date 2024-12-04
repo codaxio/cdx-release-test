@@ -166,7 +166,7 @@ export class Manifest {
   }
 
   async _scanCommits() {
-    log(`Scanning commits between [${this.target}] and [${this.source}]...`);
+    log(`Scanning commits from [${this.source}] to [${this.target}]...`);
 
     const commits = await execute(
       `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
