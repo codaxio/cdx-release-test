@@ -168,17 +168,16 @@ export class Manifest {
   async _checkImpactedPackages() {
     let root = []
     let packages = {}
-    this.config.scan = this.config.scan.map((p) => path.resolve(p))
     this.pending.commits.forEach((commit) => {
       // Build the releases from the commit files. So if one commit has changes in multiple packages, we will build the release for each package. If we have a root package, we will build a release for it as well.
       // Extract the package name from the file path if it's in a scanned path
-      const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(p)))
+      const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(path.resolve(p))))
       if (!files.length && this.config.rootPackage) root.push(commit)
       else if (files.length) {
         let dirname = `${path.resolve('.')}/`
         files.forEach((file) => {
-          let fromScan = this.config.scan.find((p) => file.startsWith(p))
-          let packagePath = file.replace(fromScan, '')
+          let fromScan = this.config.scan.find((p: string) => file.startsWith(p))
+          let packagePath = file.replace(`${fromScan}/`, '')
           console.log({file})
           console.log({fromScan})
           console.log({packagePath})
