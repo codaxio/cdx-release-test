@@ -135,6 +135,7 @@ export class Manifest {
     log(`Preparing release from [${this.source}] to [${this.target}]...`);
     await this._checkBranches()
     if (this.options.pr && this.options.pr !== true) await this.setLabel('autorelease: pending')
+    await this._scanCommits()
   }
 
   async reset() {
@@ -144,6 +145,8 @@ export class Manifest {
         this.setPackageVersion(release, release.current)
         this.resetChangelog(release)
       }
+
+      this.pending.releases = {}
     }
   }
 
@@ -152,14 +155,19 @@ export class Manifest {
     json.version = version;
     writeJson(`${release.path}/package.json`, json);
   }
+
   resetChangelog(release: Release) {
-    log(`Resetting changelog for ${release.name}`, release.path);
     if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) return
     let changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
     let chunk = changelog.split(`## [${release.next}]`)
     if (chunk.length < 2) return
     let final = `## [${release.next}]${chunk[1].split('## [')[0]}` 
     writeFileSync(`${release.path}/CHANGELOG.md`, changelog.replace(final, ''));
+  }
+
+  async _scanCommits() {
+    log(`Scanning commits between ${this.target} and ${this.source}...`);
+
   }
 
   async _checkBranches() {
