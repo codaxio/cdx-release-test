@@ -1,5 +1,5 @@
 
-## [0.2.0](https://github.com/codaxio/cdx-release-test/compare/svc1-v0.1.0...svc1-v0.2.0 (2024-12-04)
+## [0.14.0](https://github.com/codaxio/cdx-release-test/compare/undefined-v0.13.7...undefined-v0.14.0 (2024-12-04)
 
 ### Features
 
@@ -42,10 +42,4 @@
 * feat: refactor ([cf55636](https://github.com/codaxio/cdx-release-test/commit/cf55636b831e05e36f53e55e33afce2cd93bbbfa))
 * feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))
 * feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))
-
-### Dependencies
-
-* The following workspace dependencies were updated
-    * pkg1 bumped from workspace:* to 0.2.0
-
 

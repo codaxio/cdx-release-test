@@ -1,3 +1,1063 @@
 {
-
+  "packages": {
+    "undefined": {
+      "commits": [
+        {
+          "hash": "934a1f665514db3d87d9eb84e3f02c36d1080f14",
+          "date": "2024-12-04T15:28:45.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "36500d2654e8fc659bf4559331ab65fb3defd41e",
+          "date": "2024-12-04T13:52:11.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "34868d82f33cd7ebb1d2f889e6020b5e7aa74417",
+          "date": "2024-12-04T13:21:21.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "526fa8a3265efe9bca937c64e0fd3e80f52072a9",
+          "date": "2024-12-04T11:05:19.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e",
+          "date": "2024-12-04T11:04:26.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "fe106f2046e27b92ee3ee31499e254944d33b7f5",
+          "date": "2024-12-04T11:00:29.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "92842a7f8788fb509563e284fd400037cc21848b",
+          "date": "2024-12-04T10:59:41.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "67edf7f7e1b3bff86b8230a23cdad93f2d4e442d",
+          "date": "2024-12-04T10:58:11.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "7770a3069d00cf1824fd651d3ea77360deb8a88b",
+          "date": "2024-12-04T10:57:18.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "c6dddbb7487ae970a8691feebcc207b09ce8ffae",
+          "date": "2024-12-04T10:56:57.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "55a231f86db55ea0aa97369fa1651aa249adec3a",
+          "date": "2024-12-04T10:52:05.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f",
+          "date": "2024-12-04T10:51:40.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "98f7f5dcef0f028143811b49733d0a36d66405e5",
+          "date": "2024-12-04T10:47:09.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "653ffd338fad048852fe026f3837c8f407c8e665",
+          "date": "2024-12-04T10:46:04.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor command",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/cli.config.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "d824942471cbbf3f32365e18b49076b2917f9edd",
+          "date": "2024-12-04T10:44:58.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "27bb8dba23b1924f3cc500fc9f22641622ea2d14",
+          "date": "2024-12-04T10:44:06.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "d6c89006c8da9294ffd4580b2bc014f28d8c8883",
+          "date": "2024-12-04T10:29:15.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "e00a299e1c20dd657d0046ae9012d49656af3981",
+          "date": "2024-12-04T10:28:32.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "57d870d3d3dc8896e34837d3bf63ca2f80590603",
+          "date": "2024-12-04T10:18:38.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "772ae6caa869df550602a1ef4541bcf3b67d1ed0",
+          "date": "2024-12-04T10:18:06.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "a0e8942f1e4c75116e6c9e8f986b1e795270d7b8",
+          "date": "2024-12-04T10:05:52.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf",
+          "date": "2024-12-04T10:04:57.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor command",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "b965493261db87a4ed7faddef64a6cd343244ff0",
+          "date": "2024-12-04T10:02:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "7313f97338c1c0346eaa0e082bb947608c11b3a6",
+          "date": "2024-12-04T00:50:31.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "f3c5db79265b4b66c40c376ab86be7adc5dd5f22",
+          "date": "2024-12-04T00:46:51.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6",
+          "date": "2024-12-04T00:31:18.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "457c60de0c8bc180642157850000b901bf58cd5e",
+          "date": "2024-12-03T23:46:07.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/cli.config.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "b9a56368af256184e4b22978034c00453bb56006",
+          "date": "2024-12-03T22:22:02.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "caa25d1d45a98eeac9d51223acd39787868b722e",
+          "date": "2024-12-03T18:03:50.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "1cc577e2c29b84338b5563f7f833f0b52f76a763",
+          "date": "2024-12-03T18:02:54.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "1d52f2ba6bfd7452878fc2d78026686cd9523ad9",
+          "date": "2024-12-03T18:02:09.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "adcef856e0f059c7368c410645d3bb62afbfecb0",
+          "date": "2024-12-03T18:00:49.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+          ]
+        },
+        {
+          "hash": "1d389c2ef98c5c46c873a254eb9f0bd66cd92160",
+          "date": "2024-12-03T17:57:37.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+          ]
+        },
+        {
+          "hash": "f4c5ec6ee8fda8f873962d5d2b29a54004461e89",
+          "date": "2024-12-03T17:55:18.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+          ]
+        },
+        {
+          "hash": "cf55636b831e05e36f53e55e33afce2cd93bbbfa",
+          "date": "2024-12-03T17:53:57.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "49de88f3703a372cc7f59e8ae735dda10e369c53",
+          "date": "2024-12-03T17:51:07.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+          ]
+        },
+        {
+          "hash": "cd7adf0d1521175811e88d6929ab7a95861e30cd",
+          "date": "2024-12-03T17:34:33.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: refactor",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/pnpm-lock.yaml"
+          ]
+        }
+      ],
+      "path": ".",
+      "json": {
+        "devDependencies": {
+          "@codaxio/cdx": "^0.29.0",
+          "@types/node": "^22.10.1"
+        },
+        "version": "0.13.7"
+      },
+      "bump": "minor",
+      "changelog": "\n## [0.14.0](https://github.com/codaxio/cdx-release-test/compare/undefined-v0.13.7...undefined-v0.14.0 (2024-12-04)\n\n### Features\n\n* feat: refactor ([934a1f6](https://github.com/codaxio/cdx-release-test/commit/934a1f665514db3d87d9eb84e3f02c36d1080f14))\n* feat: bump all ([36500d2](https://github.com/codaxio/cdx-release-test/commit/36500d2654e8fc659bf4559331ab65fb3defd41e))\n* feat: bump all ([34868d8](https://github.com/codaxio/cdx-release-test/commit/34868d82f33cd7ebb1d2f889e6020b5e7aa74417))\n* feat: refactor ([526fa8a](https://github.com/codaxio/cdx-release-test/commit/526fa8a3265efe9bca937c64e0fd3e80f52072a9))\n* feat: refactor ([c7ba9bc](https://github.com/codaxio/cdx-release-test/commit/c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e))\n* feat: refactor ([fe106f2](https://github.com/codaxio/cdx-release-test/commit/fe106f2046e27b92ee3ee31499e254944d33b7f5))\n* feat: refactor ([92842a7](https://github.com/codaxio/cdx-release-test/commit/92842a7f8788fb509563e284fd400037cc21848b))\n* feat: refactor ([67edf7f](https://github.com/codaxio/cdx-release-test/commit/67edf7f7e1b3bff86b8230a23cdad93f2d4e442d))\n* feat: refactor ([7770a30](https://github.com/codaxio/cdx-release-test/commit/7770a3069d00cf1824fd651d3ea77360deb8a88b))\n* feat: refactor ([c6dddbb](https://github.com/codaxio/cdx-release-test/commit/c6dddbb7487ae970a8691feebcc207b09ce8ffae))\n* feat: refactor ([55a231f](https://github.com/codaxio/cdx-release-test/commit/55a231f86db55ea0aa97369fa1651aa249adec3a))\n* feat: refactor ([46f9c08](https://github.com/codaxio/cdx-release-test/commit/46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f))\n* feat: bump all ([2a2e0ec](https://github.com/codaxio/cdx-release-test/commit/2a2e0ecd77b461431fec29a9631fa57b6c02db16))\n* feat: bump all ([cfa256f](https://github.com/codaxio/cdx-release-test/commit/cfa256f3d27d55aef8f1d437ae4a1f578d4050f0))\n* feat: refactor ([98f7f5d](https://github.com/codaxio/cdx-release-test/commit/98f7f5dcef0f028143811b49733d0a36d66405e5))\n* feat: refactor command ([653ffd3](https://github.com/codaxio/cdx-release-test/commit/653ffd338fad048852fe026f3837c8f407c8e665))\n* feat: refactor ([d824942](https://github.com/codaxio/cdx-release-test/commit/d824942471cbbf3f32365e18b49076b2917f9edd))\n* feat: refactor ([27bb8db](https://github.com/codaxio/cdx-release-test/commit/27bb8dba23b1924f3cc500fc9f22641622ea2d14))\n* feat: refactor ([d6c8900](https://github.com/codaxio/cdx-release-test/commit/d6c89006c8da9294ffd4580b2bc014f28d8c8883))\n* feat: refactor ([e00a299](https://github.com/codaxio/cdx-release-test/commit/e00a299e1c20dd657d0046ae9012d49656af3981))\n* feat: refactor ([57d870d](https://github.com/codaxio/cdx-release-test/commit/57d870d3d3dc8896e34837d3bf63ca2f80590603))\n* feat: refactor ([772ae6c](https://github.com/codaxio/cdx-release-test/commit/772ae6caa869df550602a1ef4541bcf3b67d1ed0))\n* feat: refactor ([a0e8942](https://github.com/codaxio/cdx-release-test/commit/a0e8942f1e4c75116e6c9e8f986b1e795270d7b8))\n* feat: refactor command ([b6d8214](https://github.com/codaxio/cdx-release-test/commit/b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf))\n* feat: refactor ([b965493](https://github.com/codaxio/cdx-release-test/commit/b965493261db87a4ed7faddef64a6cd343244ff0))\n* feat: refactor ([7313f97](https://github.com/codaxio/cdx-release-test/commit/7313f97338c1c0346eaa0e082bb947608c11b3a6))\n* feat: refactor ([f3c5db7](https://github.com/codaxio/cdx-release-test/commit/f3c5db79265b4b66c40c376ab86be7adc5dd5f22))\n* feat: refactor ([4c9ed41](https://github.com/codaxio/cdx-release-test/commit/4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6))\n* feat: refactor ([457c60d](https://github.com/codaxio/cdx-release-test/commit/457c60de0c8bc180642157850000b901bf58cd5e))\n* feat: refactor ([b9a5636](https://github.com/codaxio/cdx-release-test/commit/b9a56368af256184e4b22978034c00453bb56006))\n* feat: refactor ([caa25d1](https://github.com/codaxio/cdx-release-test/commit/caa25d1d45a98eeac9d51223acd39787868b722e))\n* feat: refactor ([1cc577e](https://github.com/codaxio/cdx-release-test/commit/1cc577e2c29b84338b5563f7f833f0b52f76a763))\n* feat: refactor ([1d52f2b](https://github.com/codaxio/cdx-release-test/commit/1d52f2ba6bfd7452878fc2d78026686cd9523ad9))\n* feat: refactor ([adcef85](https://github.com/codaxio/cdx-release-test/commit/adcef856e0f059c7368c410645d3bb62afbfecb0))\n* feat: refactor ([1d389c2](https://github.com/codaxio/cdx-release-test/commit/1d389c2ef98c5c46c873a254eb9f0bd66cd92160))\n* feat: refactor ([f4c5ec6](https://github.com/codaxio/cdx-release-test/commit/f4c5ec6ee8fda8f873962d5d2b29a54004461e89))\n* feat: refactor ([cf55636](https://github.com/codaxio/cdx-release-test/commit/cf55636b831e05e36f53e55e33afce2cd93bbbfa))\n* feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))\n* feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))\n\n",
+      "current": "0.13.7",
+      "next": "0.14.0",
+      "dependencies": []
+    },
+    "svc1": {
+      "commits": [
+        {
+          "hash": "2a2e0ecd77b461431fec29a9631fa57b6c02db16",
+          "date": "2024-12-04T10:50:58.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.release-manifest.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md"
+          ]
+        },
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        },
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        }
+      ],
+      "path": "packages/svc1",
+      "json": {
+        "name": "svc1",
+        "version": "0.1.0",
+        "description": "",
+        "dependencies": {
+          "pkg1": "workspace:*"
+        },
+        "main": "index.ts",
+        "dockerize": false,
+        "publishToCodeArtifact": true,
+        "scripts": {
+          "test": "echo \"Error: no tests specified\" && exit 1"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC"
+      },
+      "name": "svc1",
+      "bump": "minor",
+      "changelog": "\n## [0.2.0](https://github.com/codaxio/cdx-release-test/compare/svc1-v0.1.0...svc1-v0.2.0 (2024-12-04)\n\n### Features\n\n* feat: refactor ([934a1f6](https://github.com/codaxio/cdx-release-test/commit/934a1f665514db3d87d9eb84e3f02c36d1080f14))\n* feat: bump all ([36500d2](https://github.com/codaxio/cdx-release-test/commit/36500d2654e8fc659bf4559331ab65fb3defd41e))\n* feat: bump all ([34868d8](https://github.com/codaxio/cdx-release-test/commit/34868d82f33cd7ebb1d2f889e6020b5e7aa74417))\n* feat: refactor ([526fa8a](https://github.com/codaxio/cdx-release-test/commit/526fa8a3265efe9bca937c64e0fd3e80f52072a9))\n* feat: refactor ([c7ba9bc](https://github.com/codaxio/cdx-release-test/commit/c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e))\n* feat: refactor ([fe106f2](https://github.com/codaxio/cdx-release-test/commit/fe106f2046e27b92ee3ee31499e254944d33b7f5))\n* feat: refactor ([92842a7](https://github.com/codaxio/cdx-release-test/commit/92842a7f8788fb509563e284fd400037cc21848b))\n* feat: refactor ([67edf7f](https://github.com/codaxio/cdx-release-test/commit/67edf7f7e1b3bff86b8230a23cdad93f2d4e442d))\n* feat: refactor ([7770a30](https://github.com/codaxio/cdx-release-test/commit/7770a3069d00cf1824fd651d3ea77360deb8a88b))\n* feat: refactor ([c6dddbb](https://github.com/codaxio/cdx-release-test/commit/c6dddbb7487ae970a8691feebcc207b09ce8ffae))\n* feat: refactor ([55a231f](https://github.com/codaxio/cdx-release-test/commit/55a231f86db55ea0aa97369fa1651aa249adec3a))\n* feat: refactor ([46f9c08](https://github.com/codaxio/cdx-release-test/commit/46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f))\n* feat: bump all ([2a2e0ec](https://github.com/codaxio/cdx-release-test/commit/2a2e0ecd77b461431fec29a9631fa57b6c02db16))\n* feat: bump all ([cfa256f](https://github.com/codaxio/cdx-release-test/commit/cfa256f3d27d55aef8f1d437ae4a1f578d4050f0))\n* feat: refactor ([98f7f5d](https://github.com/codaxio/cdx-release-test/commit/98f7f5dcef0f028143811b49733d0a36d66405e5))\n* feat: refactor command ([653ffd3](https://github.com/codaxio/cdx-release-test/commit/653ffd338fad048852fe026f3837c8f407c8e665))\n* feat: refactor ([d824942](https://github.com/codaxio/cdx-release-test/commit/d824942471cbbf3f32365e18b49076b2917f9edd))\n* feat: refactor ([27bb8db](https://github.com/codaxio/cdx-release-test/commit/27bb8dba23b1924f3cc500fc9f22641622ea2d14))\n* feat: refactor ([d6c8900](https://github.com/codaxio/cdx-release-test/commit/d6c89006c8da9294ffd4580b2bc014f28d8c8883))\n* feat: refactor ([e00a299](https://github.com/codaxio/cdx-release-test/commit/e00a299e1c20dd657d0046ae9012d49656af3981))\n* feat: refactor ([57d870d](https://github.com/codaxio/cdx-release-test/commit/57d870d3d3dc8896e34837d3bf63ca2f80590603))\n* feat: refactor ([772ae6c](https://github.com/codaxio/cdx-release-test/commit/772ae6caa869df550602a1ef4541bcf3b67d1ed0))\n* feat: refactor ([a0e8942](https://github.com/codaxio/cdx-release-test/commit/a0e8942f1e4c75116e6c9e8f986b1e795270d7b8))\n* feat: refactor command ([b6d8214](https://github.com/codaxio/cdx-release-test/commit/b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf))\n* feat: refactor ([b965493](https://github.com/codaxio/cdx-release-test/commit/b965493261db87a4ed7faddef64a6cd343244ff0))\n* feat: refactor ([7313f97](https://github.com/codaxio/cdx-release-test/commit/7313f97338c1c0346eaa0e082bb947608c11b3a6))\n* feat: refactor ([f3c5db7](https://github.com/codaxio/cdx-release-test/commit/f3c5db79265b4b66c40c376ab86be7adc5dd5f22))\n* feat: refactor ([4c9ed41](https://github.com/codaxio/cdx-release-test/commit/4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6))\n* feat: refactor ([457c60d](https://github.com/codaxio/cdx-release-test/commit/457c60de0c8bc180642157850000b901bf58cd5e))\n* feat: refactor ([b9a5636](https://github.com/codaxio/cdx-release-test/commit/b9a56368af256184e4b22978034c00453bb56006))\n* feat: refactor ([caa25d1](https://github.com/codaxio/cdx-release-test/commit/caa25d1d45a98eeac9d51223acd39787868b722e))\n* feat: refactor ([1cc577e](https://github.com/codaxio/cdx-release-test/commit/1cc577e2c29b84338b5563f7f833f0b52f76a763))\n* feat: refactor ([1d52f2b](https://github.com/codaxio/cdx-release-test/commit/1d52f2ba6bfd7452878fc2d78026686cd9523ad9))\n* feat: refactor ([adcef85](https://github.com/codaxio/cdx-release-test/commit/adcef856e0f059c7368c410645d3bb62afbfecb0))\n* feat: refactor ([1d389c2](https://github.com/codaxio/cdx-release-test/commit/1d389c2ef98c5c46c873a254eb9f0bd66cd92160))\n* feat: refactor ([f4c5ec6](https://github.com/codaxio/cdx-release-test/commit/f4c5ec6ee8fda8f873962d5d2b29a54004461e89))\n* feat: refactor ([cf55636](https://github.com/codaxio/cdx-release-test/commit/cf55636b831e05e36f53e55e33afce2cd93bbbfa))\n* feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))\n* feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))\n\n### Dependencies\n\n* The following workspace dependencies were updated\n    * pkg1 bumped from workspace:* to 0.2.0\n",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": []
+    },
+    "svc2": {
+      "commits": [
+        {
+          "hash": "2a2e0ecd77b461431fec29a9631fa57b6c02db16",
+          "date": "2024-12-04T10:50:58.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.release-manifest.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md"
+          ]
+        },
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        },
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        }
+      ],
+      "path": "packages/svc2",
+      "json": {
+        "name": "svc2",
+        "version": "0.1.0",
+        "description": "",
+        "main": "index.ts",
+        "scripts": {
+          "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC"
+      },
+      "name": "svc2",
+      "bump": "minor",
+      "changelog": "\n## [0.2.0](https://github.com/codaxio/cdx-release-test/compare/svc2-v0.1.0...svc2-v0.2.0 (2024-12-04)\n\n### Features\n\n* feat: refactor ([934a1f6](https://github.com/codaxio/cdx-release-test/commit/934a1f665514db3d87d9eb84e3f02c36d1080f14))\n* feat: bump all ([36500d2](https://github.com/codaxio/cdx-release-test/commit/36500d2654e8fc659bf4559331ab65fb3defd41e))\n* feat: bump all ([34868d8](https://github.com/codaxio/cdx-release-test/commit/34868d82f33cd7ebb1d2f889e6020b5e7aa74417))\n* feat: refactor ([526fa8a](https://github.com/codaxio/cdx-release-test/commit/526fa8a3265efe9bca937c64e0fd3e80f52072a9))\n* feat: refactor ([c7ba9bc](https://github.com/codaxio/cdx-release-test/commit/c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e))\n* feat: refactor ([fe106f2](https://github.com/codaxio/cdx-release-test/commit/fe106f2046e27b92ee3ee31499e254944d33b7f5))\n* feat: refactor ([92842a7](https://github.com/codaxio/cdx-release-test/commit/92842a7f8788fb509563e284fd400037cc21848b))\n* feat: refactor ([67edf7f](https://github.com/codaxio/cdx-release-test/commit/67edf7f7e1b3bff86b8230a23cdad93f2d4e442d))\n* feat: refactor ([7770a30](https://github.com/codaxio/cdx-release-test/commit/7770a3069d00cf1824fd651d3ea77360deb8a88b))\n* feat: refactor ([c6dddbb](https://github.com/codaxio/cdx-release-test/commit/c6dddbb7487ae970a8691feebcc207b09ce8ffae))\n* feat: refactor ([55a231f](https://github.com/codaxio/cdx-release-test/commit/55a231f86db55ea0aa97369fa1651aa249adec3a))\n* feat: refactor ([46f9c08](https://github.com/codaxio/cdx-release-test/commit/46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f))\n* feat: bump all ([2a2e0ec](https://github.com/codaxio/cdx-release-test/commit/2a2e0ecd77b461431fec29a9631fa57b6c02db16))\n* feat: bump all ([cfa256f](https://github.com/codaxio/cdx-release-test/commit/cfa256f3d27d55aef8f1d437ae4a1f578d4050f0))\n* feat: refactor ([98f7f5d](https://github.com/codaxio/cdx-release-test/commit/98f7f5dcef0f028143811b49733d0a36d66405e5))\n* feat: refactor command ([653ffd3](https://github.com/codaxio/cdx-release-test/commit/653ffd338fad048852fe026f3837c8f407c8e665))\n* feat: refactor ([d824942](https://github.com/codaxio/cdx-release-test/commit/d824942471cbbf3f32365e18b49076b2917f9edd))\n* feat: refactor ([27bb8db](https://github.com/codaxio/cdx-release-test/commit/27bb8dba23b1924f3cc500fc9f22641622ea2d14))\n* feat: refactor ([d6c8900](https://github.com/codaxio/cdx-release-test/commit/d6c89006c8da9294ffd4580b2bc014f28d8c8883))\n* feat: refactor ([e00a299](https://github.com/codaxio/cdx-release-test/commit/e00a299e1c20dd657d0046ae9012d49656af3981))\n* feat: refactor ([57d870d](https://github.com/codaxio/cdx-release-test/commit/57d870d3d3dc8896e34837d3bf63ca2f80590603))\n* feat: refactor ([772ae6c](https://github.com/codaxio/cdx-release-test/commit/772ae6caa869df550602a1ef4541bcf3b67d1ed0))\n* feat: refactor ([a0e8942](https://github.com/codaxio/cdx-release-test/commit/a0e8942f1e4c75116e6c9e8f986b1e795270d7b8))\n* feat: refactor command ([b6d8214](https://github.com/codaxio/cdx-release-test/commit/b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf))\n* feat: refactor ([b965493](https://github.com/codaxio/cdx-release-test/commit/b965493261db87a4ed7faddef64a6cd343244ff0))\n* feat: refactor ([7313f97](https://github.com/codaxio/cdx-release-test/commit/7313f97338c1c0346eaa0e082bb947608c11b3a6))\n* feat: refactor ([f3c5db7](https://github.com/codaxio/cdx-release-test/commit/f3c5db79265b4b66c40c376ab86be7adc5dd5f22))\n* feat: refactor ([4c9ed41](https://github.com/codaxio/cdx-release-test/commit/4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6))\n* feat: refactor ([457c60d](https://github.com/codaxio/cdx-release-test/commit/457c60de0c8bc180642157850000b901bf58cd5e))\n* feat: refactor ([b9a5636](https://github.com/codaxio/cdx-release-test/commit/b9a56368af256184e4b22978034c00453bb56006))\n* feat: refactor ([caa25d1](https://github.com/codaxio/cdx-release-test/commit/caa25d1d45a98eeac9d51223acd39787868b722e))\n* feat: refactor ([1cc577e](https://github.com/codaxio/cdx-release-test/commit/1cc577e2c29b84338b5563f7f833f0b52f76a763))\n* feat: refactor ([1d52f2b](https://github.com/codaxio/cdx-release-test/commit/1d52f2ba6bfd7452878fc2d78026686cd9523ad9))\n* feat: refactor ([adcef85](https://github.com/codaxio/cdx-release-test/commit/adcef856e0f059c7368c410645d3bb62afbfecb0))\n* feat: refactor ([1d389c2](https://github.com/codaxio/cdx-release-test/commit/1d389c2ef98c5c46c873a254eb9f0bd66cd92160))\n* feat: refactor ([f4c5ec6](https://github.com/codaxio/cdx-release-test/commit/f4c5ec6ee8fda8f873962d5d2b29a54004461e89))\n* feat: refactor ([cf55636](https://github.com/codaxio/cdx-release-test/commit/cf55636b831e05e36f53e55e33afce2cd93bbbfa))\n* feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))\n* feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))\n\n",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": []
+    },
+    "pkg1": {
+      "commits": [
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        },
+        {
+          "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+          "date": "2024-12-04T10:49:55.000Z",
+          "type": "feat",
+          "breaking": false,
+          "message": "feat: bump all",
+          "files": [
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+            "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+          ]
+        }
+      ],
+      "path": "packages/pkg1",
+      "json": {
+        "name": "pkg1",
+        "version": "0.1.0",
+        "description": "",
+        "dockerize": true,
+        "publishToCodeArtifact": false,
+        "main": "index.ts",
+        "scripts": {
+          "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "keywords": [],
+        "author": "",
+        "license": "ISC"
+      },
+      "name": "pkg1",
+      "bump": "minor",
+      "changelog": "\n## [0.2.0](https://github.com/codaxio/cdx-release-test/compare/pkg1-v0.1.0...pkg1-v0.2.0 (2024-12-04)\n\n### Features\n\n* feat: refactor ([934a1f6](https://github.com/codaxio/cdx-release-test/commit/934a1f665514db3d87d9eb84e3f02c36d1080f14))\n* feat: bump all ([36500d2](https://github.com/codaxio/cdx-release-test/commit/36500d2654e8fc659bf4559331ab65fb3defd41e))\n* feat: bump all ([34868d8](https://github.com/codaxio/cdx-release-test/commit/34868d82f33cd7ebb1d2f889e6020b5e7aa74417))\n* feat: refactor ([526fa8a](https://github.com/codaxio/cdx-release-test/commit/526fa8a3265efe9bca937c64e0fd3e80f52072a9))\n* feat: refactor ([c7ba9bc](https://github.com/codaxio/cdx-release-test/commit/c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e))\n* feat: refactor ([fe106f2](https://github.com/codaxio/cdx-release-test/commit/fe106f2046e27b92ee3ee31499e254944d33b7f5))\n* feat: refactor ([92842a7](https://github.com/codaxio/cdx-release-test/commit/92842a7f8788fb509563e284fd400037cc21848b))\n* feat: refactor ([67edf7f](https://github.com/codaxio/cdx-release-test/commit/67edf7f7e1b3bff86b8230a23cdad93f2d4e442d))\n* feat: refactor ([7770a30](https://github.com/codaxio/cdx-release-test/commit/7770a3069d00cf1824fd651d3ea77360deb8a88b))\n* feat: refactor ([c6dddbb](https://github.com/codaxio/cdx-release-test/commit/c6dddbb7487ae970a8691feebcc207b09ce8ffae))\n* feat: refactor ([55a231f](https://github.com/codaxio/cdx-release-test/commit/55a231f86db55ea0aa97369fa1651aa249adec3a))\n* feat: refactor ([46f9c08](https://github.com/codaxio/cdx-release-test/commit/46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f))\n* feat: bump all ([2a2e0ec](https://github.com/codaxio/cdx-release-test/commit/2a2e0ecd77b461431fec29a9631fa57b6c02db16))\n* feat: bump all ([cfa256f](https://github.com/codaxio/cdx-release-test/commit/cfa256f3d27d55aef8f1d437ae4a1f578d4050f0))\n* feat: refactor ([98f7f5d](https://github.com/codaxio/cdx-release-test/commit/98f7f5dcef0f028143811b49733d0a36d66405e5))\n* feat: refactor command ([653ffd3](https://github.com/codaxio/cdx-release-test/commit/653ffd338fad048852fe026f3837c8f407c8e665))\n* feat: refactor ([d824942](https://github.com/codaxio/cdx-release-test/commit/d824942471cbbf3f32365e18b49076b2917f9edd))\n* feat: refactor ([27bb8db](https://github.com/codaxio/cdx-release-test/commit/27bb8dba23b1924f3cc500fc9f22641622ea2d14))\n* feat: refactor ([d6c8900](https://github.com/codaxio/cdx-release-test/commit/d6c89006c8da9294ffd4580b2bc014f28d8c8883))\n* feat: refactor ([e00a299](https://github.com/codaxio/cdx-release-test/commit/e00a299e1c20dd657d0046ae9012d49656af3981))\n* feat: refactor ([57d870d](https://github.com/codaxio/cdx-release-test/commit/57d870d3d3dc8896e34837d3bf63ca2f80590603))\n* feat: refactor ([772ae6c](https://github.com/codaxio/cdx-release-test/commit/772ae6caa869df550602a1ef4541bcf3b67d1ed0))\n* feat: refactor ([a0e8942](https://github.com/codaxio/cdx-release-test/commit/a0e8942f1e4c75116e6c9e8f986b1e795270d7b8))\n* feat: refactor command ([b6d8214](https://github.com/codaxio/cdx-release-test/commit/b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf))\n* feat: refactor ([b965493](https://github.com/codaxio/cdx-release-test/commit/b965493261db87a4ed7faddef64a6cd343244ff0))\n* feat: refactor ([7313f97](https://github.com/codaxio/cdx-release-test/commit/7313f97338c1c0346eaa0e082bb947608c11b3a6))\n* feat: refactor ([f3c5db7](https://github.com/codaxio/cdx-release-test/commit/f3c5db79265b4b66c40c376ab86be7adc5dd5f22))\n* feat: refactor ([4c9ed41](https://github.com/codaxio/cdx-release-test/commit/4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6))\n* feat: refactor ([457c60d](https://github.com/codaxio/cdx-release-test/commit/457c60de0c8bc180642157850000b901bf58cd5e))\n* feat: refactor ([b9a5636](https://github.com/codaxio/cdx-release-test/commit/b9a56368af256184e4b22978034c00453bb56006))\n* feat: refactor ([caa25d1](https://github.com/codaxio/cdx-release-test/commit/caa25d1d45a98eeac9d51223acd39787868b722e))\n* feat: refactor ([1cc577e](https://github.com/codaxio/cdx-release-test/commit/1cc577e2c29b84338b5563f7f833f0b52f76a763))\n* feat: refactor ([1d52f2b](https://github.com/codaxio/cdx-release-test/commit/1d52f2ba6bfd7452878fc2d78026686cd9523ad9))\n* feat: refactor ([adcef85](https://github.com/codaxio/cdx-release-test/commit/adcef856e0f059c7368c410645d3bb62afbfecb0))\n* feat: refactor ([1d389c2](https://github.com/codaxio/cdx-release-test/commit/1d389c2ef98c5c46c873a254eb9f0bd66cd92160))\n* feat: refactor ([f4c5ec6](https://github.com/codaxio/cdx-release-test/commit/f4c5ec6ee8fda8f873962d5d2b29a54004461e89))\n* feat: refactor ([cf55636](https://github.com/codaxio/cdx-release-test/commit/cf55636b831e05e36f53e55e33afce2cd93bbbfa))\n* feat: refactor ([49de88f](https://github.com/codaxio/cdx-release-test/commit/49de88f3703a372cc7f59e8ae735dda10e369c53))\n* feat: refactor ([cd7adf0](https://github.com/codaxio/cdx-release-test/commit/cd7adf0d1521175811e88d6929ab7a95861e30cd))\n\n",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": []
+    }
+  },
+  "releases": {
+    "undefined": {
+      "path": ".",
+      "current": "0.13.7",
+      "next": "0.14.0",
+      "dependencies": {
+        "base": [],
+        "dev": [],
+        "peer": []
+      }
+    },
+    "svc1": {
+      "path": "packages/svc1",
+      "name": "svc1",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": {
+        "base": [
+          {
+            "name": "pkg1",
+            "range": "workspace:*"
+          }
+        ],
+        "dev": [],
+        "peer": []
+      }
+    },
+    "svc2": {
+      "path": "packages/svc2",
+      "name": "svc2",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": {
+        "base": [],
+        "dev": [],
+        "peer": []
+      }
+    },
+    "pkg1": {
+      "path": "packages/pkg1",
+      "name": "pkg1",
+      "current": "0.1.0",
+      "next": "0.2.0",
+      "dependencies": {
+        "base": [],
+        "dev": [],
+        "peer": []
+      }
+    }
+  },
+  "files": [
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.release-manifest.json",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/cli.config.ts",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/package.json",
+    "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/pnpm-lock.yaml"
+  ],
+  "commits": [
+    {
+      "hash": "934a1f665514db3d87d9eb84e3f02c36d1080f14",
+      "date": "2024-12-04T15:28:45.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "36500d2654e8fc659bf4559331ab65fb3defd41e",
+      "date": "2024-12-04T13:52:11.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: bump all",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "34868d82f33cd7ebb1d2f889e6020b5e7aa74417",
+      "date": "2024-12-04T13:21:21.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: bump all",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "526fa8a3265efe9bca937c64e0fd3e80f52072a9",
+      "date": "2024-12-04T11:05:19.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "c7ba9bcb0601eee37a7c7c9d18e8e00cb3c5582e",
+      "date": "2024-12-04T11:04:26.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "fe106f2046e27b92ee3ee31499e254944d33b7f5",
+      "date": "2024-12-04T11:00:29.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "92842a7f8788fb509563e284fd400037cc21848b",
+      "date": "2024-12-04T10:59:41.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "67edf7f7e1b3bff86b8230a23cdad93f2d4e442d",
+      "date": "2024-12-04T10:58:11.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "7770a3069d00cf1824fd651d3ea77360deb8a88b",
+      "date": "2024-12-04T10:57:18.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "c6dddbb7487ae970a8691feebcc207b09ce8ffae",
+      "date": "2024-12-04T10:56:57.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "55a231f86db55ea0aa97369fa1651aa249adec3a",
+      "date": "2024-12-04T10:52:05.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "46f9c0808bdbfdfb371ffabe6c08b1ca25d5419f",
+      "date": "2024-12-04T10:51:40.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "2a2e0ecd77b461431fec29a9631fa57b6c02db16",
+      "date": "2024-12-04T10:50:58.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: bump all",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.release-manifest.json",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md"
+      ]
+    },
+    {
+      "hash": "cfa256f3d27d55aef8f1d437ae4a1f578d4050f0",
+      "date": "2024-12-04T10:49:55.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: bump all",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/CHANGELOG.md",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/pkg1/package.json",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/CHANGELOG.md",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc1/package.json",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/CHANGELOG.md",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/packages/svc2/package.json"
+      ]
+    },
+    {
+      "hash": "98f7f5dcef0f028143811b49733d0a36d66405e5",
+      "date": "2024-12-04T10:47:09.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "653ffd338fad048852fe026f3837c8f407c8e665",
+      "date": "2024-12-04T10:46:04.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor command",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/cli.config.ts",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "d824942471cbbf3f32365e18b49076b2917f9edd",
+      "date": "2024-12-04T10:44:58.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "27bb8dba23b1924f3cc500fc9f22641622ea2d14",
+      "date": "2024-12-04T10:44:06.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "d6c89006c8da9294ffd4580b2bc014f28d8c8883",
+      "date": "2024-12-04T10:29:15.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "e00a299e1c20dd657d0046ae9012d49656af3981",
+      "date": "2024-12-04T10:28:32.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "57d870d3d3dc8896e34837d3bf63ca2f80590603",
+      "date": "2024-12-04T10:18:38.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "772ae6caa869df550602a1ef4541bcf3b67d1ed0",
+      "date": "2024-12-04T10:18:06.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "a0e8942f1e4c75116e6c9e8f986b1e795270d7b8",
+      "date": "2024-12-04T10:05:52.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "b6d8214a0c15f20dde4477c1a7ed5ba1566b8aaf",
+      "date": "2024-12-04T10:04:57.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor command",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "b965493261db87a4ed7faddef64a6cd343244ff0",
+      "date": "2024-12-04T10:02:55.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "7313f97338c1c0346eaa0e082bb947608c11b3a6",
+      "date": "2024-12-04T00:50:31.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "f3c5db79265b4b66c40c376ab86be7adc5dd5f22",
+      "date": "2024-12-04T00:46:51.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "4c9ed412ee9e79cb8ec23ee00b69ba590ec818f6",
+      "date": "2024-12-04T00:31:18.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "457c60de0c8bc180642157850000b901bf58cd5e",
+      "date": "2024-12-03T23:46:07.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/cli.config.ts",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "b9a56368af256184e4b22978034c00453bb56006",
+      "date": "2024-12-03T22:22:02.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "caa25d1d45a98eeac9d51223acd39787868b722e",
+      "date": "2024-12-03T18:03:50.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "1cc577e2c29b84338b5563f7f833f0b52f76a763",
+      "date": "2024-12-03T18:02:54.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "1d52f2ba6bfd7452878fc2d78026686cd9523ad9",
+      "date": "2024-12-03T18:02:09.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "adcef856e0f059c7368c410645d3bb62afbfecb0",
+      "date": "2024-12-03T18:00:49.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+      ]
+    },
+    {
+      "hash": "1d389c2ef98c5c46c873a254eb9f0bd66cd92160",
+      "date": "2024-12-03T17:57:37.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+      ]
+    },
+    {
+      "hash": "f4c5ec6ee8fda8f873962d5d2b29a54004461e89",
+      "date": "2024-12-03T17:55:18.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml"
+      ]
+    },
+    {
+      "hash": "cf55636b831e05e36f53e55e33afce2cd93bbbfa",
+      "date": "2024-12-03T17:53:57.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "49de88f3703a372cc7f59e8ae735dda10e369c53",
+      "date": "2024-12-03T17:51:07.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts"
+      ]
+    },
+    {
+      "hash": "cd7adf0d1521175811e88d6929ab7a95861e30cd",
+      "date": "2024-12-03T17:34:33.000Z",
+      "type": "feat",
+      "breaking": false,
+      "message": "feat: refactor",
+      "files": [
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/.github/workflows/release.yml",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/commands/release.ts",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/package.json",
+        "/home/m/workspaces/smardex/Backend-RA2-Tech/cdx-release-test/pnpm-lock.yaml"
+      ]
+    }
+  ]
 }
