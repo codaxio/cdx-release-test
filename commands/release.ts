@@ -184,7 +184,7 @@ export class Manifest {
   }
 
   async publish() {
-    console.log('publishing', this.config)
+    console.log('publishing', this.pending)
     //if (!fs.existsSync(commandConfig.manifestPath)) {
     //  log('No manifest found, skipping release...');
     //  process.exit(0);
@@ -538,6 +538,7 @@ ${release.changelog}
     }
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
+    console.log(await execute(`git branch -a`))
   }
 
   setPackageVersion(release: Release, version: string) {
