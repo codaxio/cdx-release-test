@@ -150,6 +150,7 @@ export class Manifest {
     await this._checkBranches()
     if (this.options.pr && this.options.pr !== true) await this.setLabel('autorelease: pending')
     await this._scanCommits()
+    await this._checkImpactedPackages()
   }
 
   async reset() {
@@ -161,6 +162,14 @@ export class Manifest {
       }
 
       this.pending.releases = {}
+    }
+  }
+
+  async _checkImpactedPackages() {
+    let releases = []
+    for (const commit of this.pending.commits) {
+      let packagesFiles = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(path.resolve(p))));
+      console.log(packagesFiles)
     }
   }
 
@@ -177,7 +186,8 @@ export class Manifest {
     }
 
     log(`${c.blue(this.pending.commits.length)} commits found`);
-    this.pending.files = this.pending.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
+    this.pending.files = this.pending.commits.flatMap((commit) => commit.files)
+    .filter((file, i, a) => a.indexOf(file) === i);
     log(`${c.blue(this.pending.files.length)} files changed`);
   }
 
