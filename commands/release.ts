@@ -18,8 +18,20 @@ export type Release = {
   }[];
 }
 
+export type Commit = {
+  hash: string;
+  date: Date;
+  type: string;
+  scope: string;
+  breaking: boolean;
+  message: string;
+  files: string[];
+}
+
 type PendingManifest = {
   releases: Record<string, Release>;
+  commits: Commit[];
+  files: string[];
 }
 export default class ReleaseCommand extends BaseCommand {
   name = 'release';
@@ -100,6 +112,8 @@ export class Manifest {
   config: any;
   pending: PendingManifest = {
     releases: {},
+    files: [],
+    commits: []
   };
   constructor(inputs: CommandInput) {
     this.options = inputs.options as typeof this.options
@@ -150,28 +164,46 @@ export class Manifest {
     }
   }
 
-  setPackageVersion(release: Release, version: string) {
-    const json = readJson(`${release.path}/package.json`);
-    json.version = version;
-    writeJson(`${release.path}/package.json`, json);
-  }
-
-  resetChangelog(release: Release) {
-    if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) return
-    let changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
-    let chunk = changelog.split(`## [${release.next}]`)
-    if (chunk.length < 2) return
-    let final = `## [${release.next}]${chunk[1].split('## [')[0]}` 
-    writeFileSync(`${release.path}/CHANGELOG.md`, changelog.replace(final, ''));
-  }
-
   async _scanCommits() {
     log(`Scanning commits from [${this.source}] to [${this.target}]...`);
 
     const commits = await execute(
       `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
     ).then((x) => x.stdout);
-    console.log(commits)
+    this.pending.commits = await Promise.all(commits.trim().split('\n').map(this._extractCommitData));
+    if (!this.pending.commits.length) {
+      log('No commits found, skipping release...');
+      process.exit(0);
+    }
+
+    log(`${c.blue(this.pending.commits.length)} commits found`);
+    this.pending.files = this.pending.commits.flatMap((commit) => commit.files).filter((file, i, a) => a.indexOf(file) === i);
+    log(`${c.blue(this.pending.files.length)} files changed`);
+  }
+
+  async _extractCommitData(commit: string) {
+    const [hash, timestamp, ...message] = commit.split(' ');
+    let date = new Date(Number(timestamp) * 1000);
+    let scope = message.join(' ').split('(')[1]?.split(')')[0];
+    let type = message.join(' ').split(':')[0].replace(`(${scope})`, '');
+    let breaking = false
+    if (type.includes('!')) { breaking = true; type = type.replace('!', ''); }
+    return {
+      hash,
+      date,
+      type,
+      scope,
+      breaking,
+      message: message.join(' '),
+      files: await this._getCommitFiles(hash)
+    }
+  }
+    
+  async _getCommitFiles(hash: string) {
+
+    return await execute(
+      `git diff-tree --no-commit-id --name-only --line-prefix=\`git rev-parse --show-toplevel\`/ -r ${hash}`,
+    ).then((x) => x.stdout.trim().split('\n'));
   }
 
   async _checkBranches() {
@@ -189,6 +221,22 @@ export class Manifest {
     }
     await execute(`git fetch origin ${this.options.source}`);
     await execute(`git checkout ${this.options.source}`);
+  }
+
+
+  setPackageVersion(release: Release, version: string) {
+    const json = readJson(`${release.path}/package.json`);
+    json.version = version;
+    writeJson(`${release.path}/package.json`, json);
+  }
+
+  resetChangelog(release: Release) {
+    if (!fs.existsSync(`${release.path}/CHANGELOG.md`)) return
+    let changelog = fs.readFileSync(`${release.path}/CHANGELOG.md`).toString();
+    let chunk = changelog.split(`## [${release.next}]`)
+    if (chunk.length < 2) return
+    let final = `## [${release.next}]${chunk[1].split('## [')[0]}` 
+    writeFileSync(`${release.path}/CHANGELOG.md`, changelog.replace(final, ''));
   }
 
   async setLabel(label:string) {
