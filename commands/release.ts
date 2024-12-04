@@ -167,7 +167,7 @@ export class Manifest {
 
   async _checkImpactedPackages() {
     let root = []
-    let packages = {}
+    let packages = {} as Record<string, string>
     this.config.scan = this.config.scan.map((p) => path.resolve(p))
     this.pending.commits.forEach((commit) => {
       // Build the releases from the commit files. So if one commit has changes in multiple packages, we will build the release for each package. If we have a root package, we will build a release for it as well.
@@ -179,12 +179,11 @@ export class Manifest {
         files.forEach((file) => {
           let fromScan = this.config.scan.find((p: string) => file.startsWith(p))
           let packagePath = file.replace(`${fromScan}/`, '')
-          console.log({file})
-          console.log({fromScan})
-          console.log({packagePath})
+          packages[packagePath.split('/')[0]] = `${fromScan.replace(dirname, '')}/${packagePath.split('/')[0]}`
         })
       }
     })
+    console.log(packages)
   }
 
   async _scanCommits() {
