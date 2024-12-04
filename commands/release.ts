@@ -95,7 +95,6 @@ export default class ReleaseCommand extends BaseCommand {
   async run(inputs: CommandInput) {
     log(`Running release command with options:`);
     console.log(inputs.options)
-    console.log(inputs.config)
     const manifest = await Manifest.init(inputs)
   }
 }
@@ -173,10 +172,8 @@ export class Manifest {
       // Build the releases from the commit files. So if one commit has changes in multiple packages, we will build the release for each package. If we have a root package, we will build a release for it as well.
       // Extract the package name from the file path if it's in a scanned path
       const files = commit.files.filter((file) => this.config.scan.some((p) => file.startsWith(path.resolve(p))))
-      console.log(!files.length)
-      console.log(this.config.rootPackage)
       if (!files.length && this.config.rootPackage) root.push(commit)
-      else {
+      else if (files.length) {
         let dirname = path.resolve('.')
         console.log({
           files,
