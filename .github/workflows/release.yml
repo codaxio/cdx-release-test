@@ -17,6 +17,10 @@ on:
         description: 'Release branch (any, pre-* or fix-* for prerelease/hotfix)'
         required: true
         default: 'autorelease'
+      base:
+        description: 'Base branch for new release branch (main or another release branch)'
+        required: false
+        default: 'main'
 
 permissions:
   contents: write
@@ -36,6 +40,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          gh label create "autorelease: pending" -f --description "Preparing release" --color E99695
+          gh label create "autorelease: ready" -f --description "Ready to publish release" --color 2EA44F
+          gh label create "autorelease: published" -f --description "Release published" --color C0DFEF
+          gh pr edit ${{ github.event.pull_request.number }} --add-label="autorelease: pending" --remove-label "autorelease: ready"
 
       - uses: codaxio/cdx@main
         with:
@@ -64,5 +73,7 @@ jobs:
           command: |
             release \
               --source ${{ inputs.source }} \
+              --base ${{ inputs.base }} \
               --target ${{ format('release/{0}', inputs.target) }} \
+              ${{ inputs.base && format('--base {0}', inputs.base) || '' }} \
               --pr

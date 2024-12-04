@@ -1,12 +1,13 @@
 import { c, execute, readJson, writeJson } from '@codaxio/cdx';
 import fs from 'fs';
 
-import { log, Release } from './commands/release';
+import { log, type Release } from './commands/release';
 
 export default {
   release: {
     repository: 'codaxio/cdx-release-test',
     scan: ['packages'],
+    rootPackage: true,
     hooks: {
       buildAndPublish: async (release: Release) => {
         const json = readJson(`${release.path}/package.json`);
