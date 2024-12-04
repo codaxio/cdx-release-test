@@ -170,7 +170,7 @@ export class Manifest {
     const commits = await execute(
       `git log --cherry-pick --format='%H %ct %s' --no-merges --left-only ${this.options.source}...${this.options.target}`,
     ).then((x) => x.stdout);
-    this.pending.commits = await Promise.all(commits.trim().split('\n').map(this._extractCommitData));
+    this.pending.commits = await Promise.all(commits.trim().split('\n').map(this._extractCommitData.bind(this)));
     if (!this.pending.commits.length) {
       log('No commits found, skipping release...');
       process.exit(0);
