@@ -136,7 +136,7 @@ export default class ReleaseCommand extends BaseCommand {
       }) => {
         let currentTag = await config.hooks.generateTag(release, release.current);
         let nextTag = await config.hooks.generateTag(release, release.next);
-        return `## [${release.next}](https://github.com/${config.repository}/compare/${currentTag}...${nextTag} (${year}-${month}-${day})\n\n`;
+        return `## [${release.next}](https://github.com/${config.repository}/compare/${currentTag}...${nextTag}) (${year}-${month}-${day})\n\n`;
       },
       generateTag: async (release: Release, version: string) => `${release.name}-v${version}`,
       onChangelog: async () => {},

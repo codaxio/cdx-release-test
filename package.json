@@ -3,5 +3,6 @@
     "@codaxio/cdx": "^0.29.0",
     "@types/node": "^22.10.1"
   },
-  "version": "0.14.0"
+  "version": "0.14.0",
+  "name": "monorepo"
 }
